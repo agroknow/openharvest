@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Examples - Flight Data</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="../lib/bootstrap/css/bootstrap.css" rel="stylesheet">
+    <link rel="stylesheet" href="../lib/bootstrap/css/bootstrap-responsive.css">
+    <link href="http://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
+    <link rel="stylesheet" href="../lib/leaflet-1.0/leaflet.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="../../dist/css/dvf.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="../css/example.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="../css/ui.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="../../sites/all/libraries/leaflet_markercluster/dist/MarkerCluster.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="../../sites/all/libraries/leaflet_markercluster/dist/MarkerCluster.Default.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="../../dist/css/leaflet-gplaces-autocomplete.css" />
+    <link rel="stylesheet" href="../../dist/css/leaflet-search.css" />
+     <style>
+        body {
+            padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+        }
+
+        #map {
+            background-image: url('../img/subtlepatterns/pw_maze_white/pw_maze_white.png');
+        }
+
+        #map div.leaflet-tile-pane {
+            opacity: 0.4;
+        }
+
+        div.leaflet-control-legend {
+            width: 400px;
+            max-height: 80px;
+        }
+
+        .legend-line {
+            margin-bottom: 20px;
+        }
+
+        .legend-line div.scale-bars i {
+            background: none !important;
+            width: 0px;
+            height: 0px !important;
+            vertical-align: middle;
+            border-left: none !important;
+        }
+
+        .line-legend .legend-box {
+            width: 0px;
+            height: 0px !important;
+            border-top: none !important;
+            border-right: none !important;
+        }
+
+        .airport-icon .icon-plane {
+            text-align: center;
+            vertical-align: middle;
+            display: inline-block;
+            text-shadow: 2px 2px 3px #555555
+        }
+
+        .airport-icon .code {
+            color: #777777;
+            text-align: center;
+            vertical-align: middle;
+            display: inline-block;
+            text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
+            font-weight: bold;
+            *background-color: rgba(255, 255, 255, 0.5);
+            *border-radius: 3px;
+        }
+
+        #info {
+            margin: 10px;
+            position: absolute;
+            top: 200px;
+            right: 0px;
+            width: 400px;
+            height: 400px;
+            overflow-y: auto;
+            max-height: 400px;
+            z-index: 999;
+        }
+
+        #info table {
+            background-color: #fff;
+        }
+
+        .leaflet-top.leaflet-left .leaflet-control {
+            float: right;
+            clear: none;
+        }
+        
+        .leaflet-control-search .search-button {
+            display: none;
+        }
+        
+        ul {
+            list-style-type: none;
+        }
+        #search-select { 
+            height: 30px;
+            width: 150px;
+            border: 1px #000 solid;
+        }
+        #search-select li { padding: 5px 10px; z-index: 2; }
+        #search-select li:not(.init) { float: left; width: 130px; display: none; background: #ddd; }
+        #search-select li:not(.init):hover, #search-select li.selected:not(.init) { background: #09f; }
+        li.init { cursor: pointer; }
+
+        a#submit { z-index: 1; }
+
+    </style>
+</head>
+
+<body>
+<div class="navbar">
+    <div class="navbar-inner">
+        <div class="container">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+            <a class="brand" href="#">Flight Data</a>
+
+            <div class="nav-collapse collapse">
+                <ul class="nav">
+                    <li class="active"><a href="http://humangeo.github.io/leaflet-dvf">Home</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div id="map"></div>
+        <!-- <div id="info" class="leaflet-control-legend"><span style="font-style: italic; font-size: 16px;">Click on airport to view details</span></div> -->
+    </div>
+</div>
+
+
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="../lib/bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../lib/leaflet-1.0/leaflet-src.js"></script>
+<script type="text/javascript" src="http://maps.stamen.com/js/tile.stamen.js?v1.2.3"></script>
+<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.1/underscore-min.js"></script>
+<script type="text/javascript" src = "http://cdnjs.cloudflare.com/ajax/libs/moment.js/2.0.0/moment.min.js" ></script>
+<script type="text/javascript" src="../data/flightData.js"></script>
+<script type="text/javascript" src="../data/usAirports.js"></script>
+<script type="text/javascript" src="../../dist/leaflet-dvf.js"></script>
+<script type="text/javascript" src="../../sites/all/libraries/leaflet_markercluster/dist/leaflet.markercluster.js"></script>
+<script src="../../dist/leaflet-search.js"></script>
+<script src="../../dist/leaflet-gplaces-autocomplete.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?libraries=places"></script>
+<script type="text/javascript" src="../js/organizations.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,25 @@
+--- views_json.module
++++ views_json.module
+@@ -58,7 +58,21 @@
+     $count_skipped = 0;
+     $items = array();
+     foreach ($values->{'field_' . $field_id} as $item) {
+-      $items[] = drupal_render($item['rendered']);
++      // If this item is a field collection, render out each field.
++      if (isset($item['rendered']['entity']['field_collection_item'])) {
++        // Get the field collection.
++        $field_collection_item = array_pop($item['rendered']['entity']['field_collection_item']);
++        $rendered_field_collection_items = array();
++        // Go through each field collection and render all its items.
++        foreach($field_collection_item as $delta => $field_collection_item_field) {
++          if (strpos($delta, '#') === FALSE) {
++            $rendered_field_collection_items[$delta] = drupal_render($field_collection_item_field);
++          }
++        }
++        $items[] = $rendered_field_collection_items;
++      } else {
++        $items[] = drupal_render($item['rendered']);
++      }
+     }
+     return $items;
+ 

@@ -1,0 +1,589 @@
+<?php
+
+/**
+ * Implements hook_menu
+ */
+function ak_lmap_menu() {
+    
+    $items['admin/config/ak_cartography/map_settings'] = array(
+	'title' => 'Ak cartography map settings',
+	'description' => 'Map options for cartography maps.',
+	'page callback' => 'drupal_get_form',
+	'page arguments' => array('ak_lmap_options'),
+	'access arguments' => array('administer site configuration'),
+	'type' => MENU_NORMAL_ITEM,
+	'file' => 'ak_lmap.admin.inc',
+    );
+    $lmap_path = variable_get('lmap_path','lmap');
+    $items[$lmap_path] = array(
+	'title' => 'GLN Map',
+	'page callback' => '_ak_lmap',
+	'access callback' => TRUE,
+	'type' => MENU_CALLBACK
+    );
+
+    $items['map_page'] = array(
+    'title' => 'My map',
+    'page callback' => '_ak_lmap1',
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK
+    );
+
+    return $items;
+}
+
+/**
+ * Implements hook_leaflet_map_prebuild_alter
+ * @param type $settings
+ */
+function ak_lmap_leaflet_map_prebuild_alter(&$settings) {
+  //$settings['mapId'] = 'leaflet-gln-contacts';
+}
+
+function _ak_lmap1($arguments = '') {
+
+}
+
+/*
+ *
+ * Callback for hook menu
+ */
+function _ak_lmap($arguments = '') {
+
+    global $base_url;
+    
+    drupal_add_js(drupal_get_path('module', 'ip_geoloc') . '/js/ip_geoloc_leaflet_sync_content.js', array('weight' => 2));
+    drupal_add_css(drupal_get_path('module', 'ip_geoloc') . '/css/ip_geoloc_leaflet_sync_content.css');
+    drupal_add_js(array('ak_cartography' => array('baseUrl' => $base_url)), 'setting');
+    drupal_add_js(drupal_get_path('theme', 'yamato') .'/assets/js/map_locations.js', 'file');
+    drupal_add_css('html,body {height:100% !important;}', array('type' => 'inline'));
+    drupal_add_css(drupal_get_path('theme', 'yamato') .'/assets/css/map_locations.css', array('type' => 'file', 'group' => CSS_THEME));
+    
+    $blockid = variable_get('lmap_copyright_block','3');
+    $copyright_block = module_invoke('block', 'block_view', $blockid);
+    $data = isset($_SESSION['fdata']) ? $_SESSION['fdata'] : array();
+    
+    $map_form = drupal_get_form('ak_lmap_gln_form', $arguments);
+    $info_container = '<div id="info-container"><a href="#" class="close"><i class="fa fa-angle-left"></i> Close</a><div class="content"></div></div>';
+    $mobile_block = '<div id="mobile-toggle"><div class="row logo-row tc"><div><a href="/gln" rel="home"><img src="/sites/default/files/gln_logo.png" id="logo" style="height:80px;"></a></div></div>
+<div class="row bar-row">
+<div class="col-xs-4 text-center showorgs"><a id="showorgs" class="clicked" href="#"><span class="txt">Networks</span></a></div>		
+<div class="col-xs-4 text-center showcollections"><a id="showcollections" href="#"><span class="txt">Organizations</span></a></div>		
+<div class="col-xs-4 text-center showlistcol"><a id="showlist" href="#">List</a></div>
+<div class="col-xs-4 text-center showmapcol"><a id="showmap" href="#">Map</a></div></div>
+</div>';
+    $markup = '';
+    $markup .= '<div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 map-sidebar"><div class="list-block"><div id="formm-wrap">'. drupal_render($map_form) .'</div>' . _ak_lmap_show_list($data) . '</div>'
+	    . '<div class="mobile-block">' . $mobile_block . '</div>'
+	    .  '<div class="copyright-block">' .$copyright_block['content'] . '</div>'
+	    . '</div>';
+    $markup .= '<div class="col-xs-12 col-sm-6 col-md-6 col-lg-8 map-container">' . _ak_lmap_show_map($data) . $info_container . '</div>';
+    
+    if(isset($_SESSION['fdata'])) {
+        unset($_SESSION['fdata']);
+    }
+
+    return array('#markup' => $markup );
+}
+
+/*
+ *
+ * Function to render the map 
+ * 
+ */
+function _ak_lmap_show_map($data = array()) {
+    
+    $result = _ak_lmap_get_map_result($data);
+    //dpm(count($result));
+    $map = leaflet_map_get_info('OSM Mapnik');
+    $map['settings']['zoom'] = 2;
+    $map['icon'] = array(
+          'iconUrl' => '/b.png',
+          //'iconSize' => array('x' => 34, 'y' => 45),
+          'iconAnchor' => array('x' => (int) ((34 + 1) / 2), 'y' => 45),
+          // Just above topline, center.
+          'popupAnchor' => array('x' => 0, 'y' => -45 - 1),
+        );
+    //$map['settings']['maxZoom'] = $max_zoom;
+    //$map['settings']['scrollWheelZoom'] = $scroll_wheel_zoom;
+    //$map['settings']['dragging'] = $dragging;
+    
+    
+    $features = array();
+    
+    foreach ($result as $k => $record) {
+	if(empty($record->lat)) continue;
+    $features[] = array(
+    'type' => 'point',
+    'lat' => $record->lat,
+    'lon' => $record->lon,
+//    'icon' => array(
+//          'iconUrl' => '/b.png',
+//          //'iconSize' => array('x' => 34, 'y' => 45),
+//          'iconAnchor' => array('x' => (int) ((34 + 1) / 2), 'y' => 45),
+//          // Just above topline, center.
+//          'popupAnchor' => array('x' => 0, 'y' => -45 - 1),
+//        ),
+    'popup' => _ak_lmap_popup_text($record),
+    //'leaflet_id' => 'feature_' . $record->id,
+    'feature_id' => $record->id
+    );
+    }
+    if(empty($features)) {
+	$map['center']['lat'] = 0;
+	$map['center']['lon'] = 0;
+    }
+    
+    return '<div id="replace_map">' . leaflet_render_map($map, $features) . '</div>';
+}
+
+function _ak_lmap_popup_text($data) {
+    //image style --> medium
+    $text = '';
+    
+    if(module_exists('imagecache_external') && !empty($data->image_URL)) {
+	$img_tag = theme('imagecache_external', array(
+    'path' => $data->image_URL,
+    'style_name'=> 'medium',
+    //'alt' => '',
+    ));
+	$text .= '<div class="iw">' . $img_tag . '</div>';
+    }
+    $text .= '<div class="pw"><h3>'. $data->display_name .'</h3><a id="r'.$data->id.'" class="load-view mb">Show more</a></div>';
+    
+    return $text;
+}
+
+/*
+ *
+ * Function to render the list 
+ * 
+ */
+function _ak_lmap_show_list($data = array()) {
+    
+    $result = _ak_lmap_get_list_result($data);    
+    $out = '';
+    foreach ($result as $k => $record) {
+	
+	$out .= '<li class="sync-id-' . $record->id .'" ><a id="r'. $record->id .'" class="load-view">' . $record->display_name . '</a></li>';
+    }
+    if(empty($out)) {
+	$out = '<li class="text-center">No networks found for the specified criteria</li>';
+    }
+    return '<div id="replace_list" class="listing"><ul class="listing-list">' . $out . '</ul></div>';
+}
+
+/**
+ * Map / list filtering form
+ */
+function ak_lmap_gln_form($form, &$form_state, $arg) { 
+
+    $ajax = ($arg == 'ajax') ? FALSE : TRUE;
+    //Filter by name
+    $form['name'] = array(
+	'#type' => 'textfield',
+	'#title' => t('Name'),
+	'#title_display' => 'invisible',
+	'#attributes' => array('class' => array('full_w','andtimer'), 'placeholder' => 'Type an Organization\'s Name..'),
+	'#default_value' => '',
+	'#weight' => 1,
+	'#ajax' => $ajax ? array(
+	    'callback' => 'ajax_lmap_sbmt',
+	    'event' => 'finishedinput',
+	) : '',
+    );
+    //Filter by areas of activity
+    $form['agrovoc'] = array(
+	'#type' => 'select',
+	'#title' => t('Areas of activity'),
+	'#title_display' => 'invisible',
+	'#attributes' => array('class' => array('hidden')),
+	//'#multiple' => TRUE,
+	'#options' => _ak_lmap_get_optionlists('agrovoc', null, isset($form_state['values']['country']) ? $form_state['values']['country'] : null, isset($form_state['values']['name']) ? $form_state['values']['name'] : '' ),
+	'#empty_option' => t('None'),
+	'#weight' => 4,
+    '#default_value' => (isset($_SESSION['fdata']) && !$ajax) ? $_SESSION['fdata']['agrovoc'] : '',
+	'#ajax' => $ajax ? array(
+	    'callback' => 'ajax_lmap_sbmt',
+	) : '',
+    );
+    
+    //Filter by areas of activity
+    $form['country'] = array(
+	'#type' => 'select',
+	'#title' => t('Country'),
+	'#title_display' => 'invisible',
+	'#attributes' => array('class' => array('full_w')),
+	//'#multiple' => TRUE,
+	'#options' => _ak_lmap_get_optionlists('country', isset($form_state['values']['agrovoc']) ? $form_state['values']['agrovoc'] : null, null , isset($form_state['values']['name']) ? $form_state['values']['name'] : '' ),
+	'#empty_option' => t('List by Country'),
+    '#default_value' => (isset($_SESSION['fdata']) && !$ajax) ? $_SESSION['fdata']['country'] : '',
+	'#weight' => 3,
+	'#ajax' => $ajax ? array(
+	    'callback' => 'ajax_lmap_sbmt',
+	) : '',
+    );
+    //Filter by contact type (actually filters the group)
+
+	if(!isset($_SESSION['fdata']))
+    {
+	   $net = array('type' => 1); //For calcultating the counts on first load
+	   $org = array('type' => 2);
+	} else {
+       $net = array_merge($_SESSION['fdata'], array('type' => 1));
+       $org = array_merge($_SESSION['fdata'], array('type' => 2));
+
+    }
+
+	$form['type'] = array(
+	'#type' => 'radios',
+	'#title' => t('Type'),
+	'#title_display' => 'invisible',
+	'#options' => array(1 => 'Networks <span id="count_1" class="count networks">'. count(_ak_lmap_get_list_result($net)) .'</span>', 2 => 'Organizations <span id="count_2" class="count organizations">'. count(_ak_lmap_get_list_result($org)) .'</span>'),
+	'#default_value' => 1,
+    '#default_value' => (isset($_SESSION['fdata']) && !$ajax) ? $_SESSION['fdata']['type'] : 1,
+	'#weight' => 2,
+	    '#ajax' => $ajax ? array(
+	    'callback' => 'ajax_lmap_sbmt',
+	    ) : '',
+	);
+	
+    //Submit button
+   if(!$ajax) {
+   $form['submit_button'] = array(
+	'#type' => 'submit',
+	'#value' => t('Search'),
+    '#weight' => 20
+	// '#ajax' => array(
+	//     'callback' => 'ajax_lmap_sbmt',
+	// ),
+   );
+    }
+    
+    $form['#prefix'] = '<div id="replace_form">';
+    $form['#suffix'] = '<div class="text-center reset"><input class="btn btn-primary bold form-submit" type="submit" id="edit-reset" name="op" value="Clear all filters"></div><div class="loader"></div></div>';
+    
+    return $form;
+}
+
+function ak_lmap_gln_form_submit($form, &$form_state) {
+    $_SESSION['fdata'] = $form_state['values'];
+}
+
+/**
+ * Ajax callback for form submission
+ * @param type $form
+ * @param type $form_state
+ * @return string
+ */
+function ajax_lmap_sbmt($form, &$form_state) {
+    
+	$commands = array();
+  
+    //if (!empty($form_state['values']['op'])) {
+	
+	$data_map = _ak_lmap_show_map($form_state['values']);
+	$data_list = _ak_lmap_show_list($form_state['values']);
+	//Get the counts
+	$net = array_merge($form_state['values'], array('type' => 1));
+	$org = array_merge($form_state['values'], array('type' => 2));
+	
+	$count1 = count(_ak_lmap_get_list_result($net));
+	$count2 = count(_ak_lmap_get_list_result($org));
+		
+	$commands[] = ajax_command_replace('#replace_map', $data_map);
+	$commands[] = ajax_command_replace('#replace_list', $data_list);
+	$commands[] = ajax_command_replace('#replace_form', render($form));
+	$commands[] = ajax_command_replace('#count_1', '<span id="count_1" class="count networks">' . $count1 . '</span>' );
+	$commands[] = ajax_command_replace('#count_2', '<span id="count_2" class="count organizations">' . $count2 . '</span>');
+	
+    //}
+    
+    $page = array('#type' => 'ajax', '#commands' => $commands);
+    return $page;
+}
+
+function ajax_country_up($form, &$form_state) {
+    return $form['country'];
+}
+
+
+/**
+
+ * Function to get the sql result
+ * @param Array $data
+ * @return Objects array /
+ */
+function _ak_lmap_get_map_result($data = array()) {
+    
+    //$data['type'] = isset($data['type']) ? null : null;
+    $data['type'] = isset($data['type']) ? $data['type'] : 1;
+    $data['agrovoc'] = isset($data['agrovoc']) ? $data['agrovoc'] : null;
+    $data['country'] = isset($data['country']) ? $data['country'] : null;
+    $data['name'] = isset($data['name']) ? $data['name'] : '';
+	    
+    $org_id = variable_get('ak_gln_map_group_org_id', '16');
+    $net_id = variable_get('ak_gln_map_group_net_id', '62');
+	    
+    $agrovoc_table = variable_get('ak_agris_map_agrovoc_table', 'civicrm_value_misc_all_contact_types__39');
+    $agrovoc_field = variable_get('ak_agris_map_agrovoc_field', 'areas_of_activity_agrovoc_keywor_100');
+    
+    $q = db_select('civicrm_contact','cc');
+    $q->addJoin('LEFT', 'civicrm_group_contact', 'gc', 'gc.contact_id = cc.id');
+    $q->addJoin('LEFT', 'civicrm_group', 'g', 'g.id = gc.group_id');
+    
+    $q->addJoin('LEFT', 'civicrm_address', 'ad', 'ad.contact_id = cc.id');
+    
+    if($data['agrovoc']) {
+    $q->addJoin('LEFT', $agrovoc_table, 'agrovoc_table', 'agrovoc_table.entity_id = cc.id');
+    }
+    
+    $q->addField('cc', 'id');
+    $q->addField('cc', 'contact_type');
+    $q->addField('cc', 'image_URL');
+    $q->addField('gc', 'group_id');
+    $q->addField('cc', 'contact_sub_type');
+    $q->addField('cc', 'display_name');
+    $q->addField('ad', 'geo_code_1', 'lat');
+    $q->addField('ad', 'geo_code_2', 'lon');
+    //$q->addExpression('COUNT(*)', 'total');
+    
+        
+    $q->condition('cc.contact_type', array('Organization', 'Household'), 'IN');
+    $q->condition('cc.is_deleted', 0);
+    $q->condition('ad.is_primary', 1);
+    $q->condition('gc.status', 'Added');
+    
+    if($data['type']) {
+	$q->condition('gc.group_id', $data['type'] == 1 ? $net_id : $org_id);
+    }
+    
+    if($data['name']) {
+	$q->condition('cc.display_name', '%' . db_like($data['name']) . '%', 'LIKE');
+    }
+    if($data['country']) {
+	$q->condition('ad.country_id', $data['country']);
+    }
+    if($data['agrovoc']) {
+	$q->condition('agrovoc_table.' . $agrovoc_field, '%' . db_like($data['agrovoc']) . '%', 'LIKE');
+    }    
+    $or = db_or();
+    $or->condition('gc.group_id', $org_id);
+    $or->condition('gc.group_id', $net_id);
+    $q->condition($or);
+    //$q->groupBy('gc.group_id');
+    
+    return $q->execute()->fetchAll();
+    
+}
+
+
+function _ak_lmap_get_list_result($data = array()) {
+    
+    $data['type'] = isset($data['type']) ? $data['type'] : 1;
+    $data['agrovoc'] = isset($data['agrovoc']) ? $data['agrovoc'] : null;
+    $data['country'] = isset($data['country']) ? $data['country'] : null;
+    $data['name'] = isset($data['name']) ? $data['name'] : '';
+	    
+    $org_id = variable_get('ak_gln_map_group_org_id', '16');
+    $net_id = variable_get('ak_gln_map_group_net_id', '62');
+	    
+    $agrovoc_table = variable_get('ak_agris_map_agrovoc_table', 'civicrm_value_misc_all_contact_types__39');
+    $agrovoc_field = variable_get('ak_agris_map_agrovoc_field', 'areas_of_activity_agrovoc_keywor_100');
+    
+    $q = db_select('civicrm_contact','cc');
+    $q->addJoin('LEFT', 'civicrm_group_contact', 'gc', 'gc.contact_id = cc.id');
+    $q->addJoin('LEFT', 'civicrm_group', 'g', 'g.id = gc.group_id');
+    
+    $q->addJoin('LEFT', 'civicrm_address', 'ad', 'ad.contact_id = cc.id');
+    
+    if($data['agrovoc']) {
+    $q->addJoin('LEFT', $agrovoc_table, 'agrovoc_table', 'agrovoc_table.entity_id = cc.id');
+    }
+    
+    $q->addField('cc', 'id');
+    $q->addField('cc', 'contact_type');
+    $q->addField('gc', 'group_id');
+    $q->addField('cc', 'contact_sub_type');
+    $q->addField('cc', 'display_name');
+    $q->addField('ad', 'geo_code_1', 'lat');
+    $q->addField('ad', 'geo_code_2', 'lon');
+    //$q->addExpression('COUNT(*)', 'total');
+    
+        
+    $q->condition('cc.contact_type', array('Organization', 'Household'), 'IN');
+    $q->condition('cc.is_deleted', 0);
+    $q->condition('ad.is_primary', 1);
+    $q->condition('gc.status', 'Added');
+    
+    if($data['type']) {
+	$q->condition('gc.group_id', $data['type'] == 1 ? $net_id : $org_id);
+    }
+    
+    if($data['name']) {
+	$q->condition('cc.display_name', '%' . db_like($data['name']) . '%', 'LIKE');
+    }
+    if($data['country']) {
+	$q->condition('ad.country_id', $data['country']);
+    }
+    if($data['agrovoc']) {
+	$q->condition('agrovoc_table.' . $agrovoc_field, '%' . db_like($data['agrovoc']) . '%', 'LIKE');
+    }    
+    $or = db_or();
+    $or->condition('gc.group_id', $org_id);
+    $or->condition('gc.group_id', $net_id);
+    $q->condition($or);
+    //$q->groupBy('gc.group_id');
+    
+    return $q->execute()->fetchAll();
+    
+}
+
+
+function _ak_lmap_get_optionlists($opt, $agrovoc = null, $country = null, $name = '') {
+    
+    $org_id = variable_get('ak_gln_map_group_org_id', '16');
+    $net_id = variable_get('ak_gln_map_group_net_id', '62');
+    
+    $agrovoc_table = variable_get('ak_agris_map_agrovoc_table', 'civicrm_value_misc_all_contact_types__39');
+    $agrovoc_field = variable_get('ak_agris_map_agrovoc_field', 'areas_of_activity_agrovoc_keywor_100');
+    
+    $q = db_select('civicrm_contact','cc');
+    $q->addJoin('INNER', 'civicrm_group_contact', 'gc', 'gc.contact_id = cc.id');
+    $q->addJoin('INNER', 'civicrm_group', 'g', 'g.id = gc.group_id');
+    
+    if($opt == 'country' || $country) {
+	
+	$q->addJoin('INNER', 'civicrm_address', 'ad', 'ad.contact_id = cc.id');
+	$q->addJoin('INNER', 'civicrm_country', 'country', 'ad.country_id = country.id');
+	$q->addField('ad', 'country_id');
+	$q->addField('country', 'name');
+    } 
+    
+    if($opt == 'agrovoc' || $agrovoc) {
+	
+	$q->addJoin('INNER', $agrovoc_table, 'agrovoc_table', 'agrovoc_table.entity_id = cc.id');
+	$q->addJoin('INNER', 'civicrm_option_value', 'ov', 'agrovoc_table.'.$agrovoc_field.' = ov.value');
+	$q->addField('agrovoc_table', $agrovoc_field);
+	$q->addField('ov', 'label');
+    }
+    
+    $q->addExpression('COUNT(*)', 'total');
+    
+    $q->condition('cc.contact_type', array('Organization', 'Household'), 'IN');
+    $q->condition('cc.is_deleted', 0);
+    $q->condition('gc.status', 'Added');
+    
+    if($opt == 'agrovoc' && $country) {
+	$q->condition('ad.country_id', $country);
+    }
+    if($opt == 'country' && $agrovoc) {
+	$q->condition('agrovoc_table.' . $agrovoc_field, $agrovoc);
+    }
+    
+    if($name) {
+	$q->condition('cc.display_name', '%' . db_like($name) . '%', 'LIKE');
+    }
+    
+    $or = db_or();
+    $or->condition('gc.group_id', $org_id);
+    $or->condition('gc.group_id', $net_id);
+    $q->condition($or);
+    
+    if($opt == 'agrovoc') {
+	$q->groupBy('agrovoc_table.' . $agrovoc_field );
+    } else {
+	$q->groupBy('ad.country_id');
+    }
+    
+    $opts = array();
+    $result = $q->execute()->fetchAll();
+	
+    foreach($result as $res) {
+	if($opt == 'agrovoc') {
+	    
+	    $clean = str_replace('', '', $res->{$agrovoc_field});
+	    if($clean == '') {
+		continue;
+	    }
+	    $k = $clean;
+	    $opts[$k] = $res->label ;//. ' ' . $res->total;
+	} else {
+	    $opts[$res->country_id] = $res->name ;//. ' ' . $res->total;
+	}
+    }
+    //$opts['All'] = '-Any-';
+    
+//    return array_filter($opts, function($key) {
+//	return $key != '';
+//    }, ARRAY_FILTER_USE_KEY);
+    //dpm($opts);
+    return $opts;
+} 
+
+function _ak_lmap_get_related($basecontact, $is_a_b, $reltype) {
+    
+    $other_contact = ($is_a_b == 'a') ? 'b' : 'a';
+    $q = db_select('civicrm_contact','cc');
+    $q->addField('cc', 'id');
+    $q->addField('cc', 'display_name');
+    $q->addJoin('INNER', 'civicrm_relationship', 'cr', 'cr.contact_id_'. $other_contact .' = cc.id');
+    $q->condition('cr.relationship_type_id', $reltype);
+    $q->condition('cr.is_active', 1);
+    $q->condition('cr.contact_id_'. $is_a_b, $basecontact);
+    
+    return $q->execute()->fetchAll();
+}
+
+function _ak_lmap_get_related_withcountry($basecontact, $is_a_b, $reltype) {
+    
+    $other_contact = ($is_a_b == 'a') ? 'b' : 'a';
+    $q = db_select('civicrm_contact','cc');
+    $q->addField('cc', 'id');
+    $q->addField('cc', 'display_name');
+    $q->addField('country', 'name');
+    $q->addJoin('INNER', 'civicrm_relationship', 'cr', 'cr.contact_id_'. $other_contact .' = cc.id');
+    $q->addJoin('INNER', 'civicrm_address', 'ca', 'cr.contact_id_'. $other_contact .' = ca.contact_id');
+    $q->addJoin('INNER', 'civicrm_country', 'country', 'ca.country_id = country.id');
+    $q->condition('cr.relationship_type_id', $reltype);
+    $q->condition('cr.is_active', 1);
+    $q->condition('cr.contact_id_'. $is_a_b, $basecontact);
+    $q->orderBy('name');
+    
+    return $q->execute()->fetchAll();
+}
+
+function _ak_lmap_print_related($result) {
+    
+    $out = '';
+    foreach ($result as $k => $record) {
+	
+	$out .= '<li class="sync-id-' . $record->id .'" ><a id="r'. $record->id .'" class="load-view">' . $record->display_name . '</a></li>';
+    }
+    
+    print '<ul class="listing-list">' . $out . '</ul>'; 
+    
+}
+
+
+function _ak_lmap_print_related_withcountry($result) {
+    
+    $out = '';
+    $grouped = array();
+    foreach ($result as $k => $record) {
+	$grouped[$record->name][$record->id] = $record->display_name;
+    }
+    
+    foreach ($grouped as $country => $orgs) {
+	$out .= '<li><span class="country">'. $country .' ('. count($orgs) .')<i class="fa fa-angle-down"></i><i class="fa fa-angle-up"></i></span><ul class="country-list">';
+    asort($orgs);
+
+	foreach ($orgs as $id => $org) {
+	    $out .= '<li class="sync-id-' . $id .'" ><a id="r'. $id .'" class="load-view">' . $org . '</a></li>';
+	}
+	$out .= '</ul></li>';
+    }
+    
+    print '<ul class="listing-list countries">' . $out . '</ul>'; 
+        
+}

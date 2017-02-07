@@ -1,0 +1,55 @@
+;Theme info
+name = Agage
+description = Agage ready for use Industries, School, hospital, corporative, travel, fashion, jewellery and any business.
+package = Core
+version = VERSION
+core = 7.x
+screenshot = 'screenshot.png'
+
+
+; Add a style sheet
+stylesheets[all][] = css/preloader/preloader.css
+stylesheets[all][] = css/bootstrap/bootstrap.min.css
+stylesheets[all][] = css/icons/font-awesome.min.css
+stylesheets[all][] = css/icons/ionicons.min.css
+stylesheets[all][] = css/animate.css
+stylesheets[all][] = css/owl/owl.carousel.css
+stylesheets[all][] = css/cubeportfolio/cubeportfolio.min.css
+
+
+; Add a script
+scripts[] = js/plugins/jquery-1.11.1.min.js
+scripts[] = js/plugins/plugin.js
+scripts[] = js/custom.js
+scripts[] = js/blog.js
+scripts[] = js/count.js
+
+;Core regions
+regions[logo_header] = 'Logo Header'
+regions[main_menu] = 'Main Menu'
+regions[content] = 'Main Content'
+regions[top_content] = 'Top Content'
+regions[section_content] = 'Section Content'
+regions[bot_content_1] = 'Bot Content 1'
+regions[bot_content_2] = 'Bot Content 2'
+regions[bot_content_3] = 'Bot Content 3'
+regions[sidebar] = 'Sidebar'
+regions[footer_social] = 'Footer Social'
+
+;Features (core settings)
+features[] = 'logo'
+features[] = 'name'
+features[] = 'node_user_picture'
+features[] = 'comment_user_picture'
+features[] = 'comment_user_verification'
+
+;Breadcrumb
+settings[breadcrumb_display] = 'yes'
+settings[breadcrumb_separator] = ' &#187; '
+settings[breadcrumb_home] = 1
+
+settings[footer_copyright_message] = 'COPYRIGHTS &copy; 2014 DESIGN BY <a target="_blank" href="http://your-domain.com">DrupalTheme</a>.'
+
+version = "7.x"
+project = "Agage"
+datestamp = "1365027012"
