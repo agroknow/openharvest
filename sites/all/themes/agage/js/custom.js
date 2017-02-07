@@ -612,7 +612,7 @@
         /* - Initialize Map
          /* -------------------------------*/
         if (typeof (google) !== 'undefined')
-            initializeMap();
+            //initializeMap();
 
         /* --------------------------------*/
         /* - Parallax Effect on other than mobile
