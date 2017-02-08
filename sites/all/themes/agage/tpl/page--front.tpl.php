@@ -2,6 +2,19 @@
 
 global $base_url;
 
+drupal_add_js(array('baseUrl' => $base_url), 'setting');
+
+libraries_load('leaflet');
+drupal_add_library('leaflet_markercluster', 'leaflet_markercluster');
+
+drupal_add_library('ak_cp','ak_cp',FALSE);
+
+drupal_add_js('https://maps.googleapis.com/maps/api/js?libraries=places', 'external');
+drupal_add_js('http://maps.stamen.com/js/tile.stamen.js?v1.2.3', 'external');
+drupal_add_js(drupal_get_path('module', 'ak_cp') .'/js/ak_cp.js', 'file');
+
+drupal_add_css(drupal_get_path('module', 'ak_cp') .'/css/ak_cp.css', 'file');
+
 if(!empty($_REQUEST["style"])){
 	$style = $_REQUEST["style"];
 } else {
@@ -58,7 +71,8 @@ if(empty($style)) $style = 'style1';
                 </div>
                 
                 <div class="collapse navbar-collapse navbar-right" id="navigation-menu">
-                	<ul class="nav navbar-nav">
+                	<!-- MENU -->
+                    <?php print render($page['main_menu']) ?>
                     	<!--Content menu - update.js-->
                     </ul>
                 </div>
@@ -114,14 +128,13 @@ if($style == 'style4') {
 	$body_class = '';
 }
 ?>
-
-<?php  if($page['section_content']):?>
 <div id="pageWrapper" class="clearfix en-creative <?php print $body_class; ?>">
-	<div class="contentWrapper">
+    <div class="contentWrapper">
+          <div id="map"></div>
+<?php  if($page['section_content']):?>
         <?php print render($page['section_content']); ?>
         <?php print render($page['top_content']); ?>
-   	</div>
-</div>
 <?php endif; ?>
-
+    </div>
+</div>
 <?php require_once(drupal_get_path('theme','agage').'/tpl/footer.tpl.php'); ?>

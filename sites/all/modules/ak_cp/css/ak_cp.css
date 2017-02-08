@@ -1,0 +1,23 @@
+#map {
+    background: #ccc;
+}
+
+#map div.leaflet-tile-pane {
+    opacity: 0.4;
+}
+
+ul{ 
+   list-style-type: none;
+}
+   
+#search-select { 
+    height: 30px;
+    width: 150px;
+    border: 1px #000 solid;
+}
+
+#search-select li { padding: 5px 10px; z-index: 2; }
+#search-select li:not(.init) { float: left; width: 130px; display: none; background: #ddd; }
+#search-select li:not(.init):hover, #search-select li.selected:not(.init) { background: #09f; }
+li.init { cursor: pointer; }
+a#submit { z-index: 1; }
