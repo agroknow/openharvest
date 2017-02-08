@@ -59,11 +59,11 @@ $(document).ready(function () {
 
         // Group flight data by nid code
         var mapDataPerType = _.groupBy(mapData, function (value) {
-            return (value.type !== 'Collection') ? 'Organization' : 'Collection' ;
+            return (value.type !== 'data_point') ? 'organization' : 'data_point' ;
         });
 
-        var orgs = L.GeometryUtils.arrayToMap(mapDataPerType.Organization, 'nid');
-        var cols = L.GeometryUtils.arrayToMap(mapDataPerType.Collection, 'nid');
+        var orgs = L.GeometryUtils.arrayToMap(mapDataPerType.organization, 'nid');
+        var cols = L.GeometryUtils.arrayToMap(mapDataPerType.data_point, 'nid');
 
         //console.log(mapDataPerType);
         // Group flight data by nid code
