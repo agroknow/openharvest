@@ -1,0 +1,28 @@
+<?php
+
+/**
+ * Implements hook_library().
+ * @return string
+ */
+function ak_cp_library() {
+  $libraries['ak_cp'] = array(
+    'title' => 'Ak community platform',
+    'website' => '',
+    'version' => '1.0',
+    'js' => array(
+       drupal_get_path('module', 'ak_cp') . '/js/underscore-min.js' => array(),
+       drupal_get_path('module', 'ak_cp') . '/js/leaflet_dvf/dist/leaflet-dvf.js' => array(),
+       drupal_get_path('module', 'ak_cp') . '/js/leaflet_google_places_autocomplete/src/js/leaflet-gplaces-autocomplete.js' => array(),
+       drupal_get_path('module', 'ak_cp') . '/js/leaflet_search/src/leaflet-search.js' => array(),
+       ),
+   
+    'css' => array(
+      drupal_get_path('module', 'ak_cp') . '/js/leaflet_dvf/dist/css/dvf.css' => array(),
+      drupal_get_path('module', 'ak_cp') . '/js/leaflet_google_places_autocomplete/dist/css/leaflet-gplaces-autocomplete.css' => array(),
+      drupal_get_path('module', 'ak_cp') . '/js/leaflet_search/dist/css/leaflet-search.css' => array(),
+      ),
+    
+  );
+
+  return $libraries;
+}
