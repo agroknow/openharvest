@@ -1,3 +1,17 @@
 .navbar-nav > li {
 	padding: 0;
 }
+
+.navbar > .container .navbar-brand, .navbar > .container-fluid .navbar-brand {
+	max-width: 200px;
+
+}
+
+.navbar-brand img {
+	width: 100%;
+}
+
+.leaflet-top {
+	top: 100px;
+
+}
