@@ -11,10 +11,10 @@
                         <span></span>
                     </button>
                     <a class="navbar-brand overlay-header-logo" href="#home">
-                    	<img src="<?php print $base_url.'/'.path_to_theme();?>/logo.png" alt="logo" role="banner">
+                    	<img src="<?php print $base_url.'/'.path_to_theme();?>/logo.jpg" alt="logo" role="banner">
                    	</a> 
 		  			<a class="navbar-brand normal-header-logo" href="#home">
-                    	<img src="<?php print $base_url.'/'.path_to_theme();?>/logo-black.png" alt="logo" role="banner">
+                    	<img src="<?php print $base_url.'/'.path_to_theme();?>/logo-black.jpg" alt="logo" role="banner">
                    	</a>
                 </div>
                 <?php  if($page['main_menu']):?>

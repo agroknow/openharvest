@@ -9,7 +9,7 @@ drupal_add_library('leaflet_markercluster', 'leaflet_markercluster');
 
 drupal_add_library('ak_cp','ak_cp',FALSE);
 
-drupal_add_js('https://maps.googleapis.com/maps/api/js?libraries=places', 'external');
+//drupal_add_js('https://maps.googleapis.com/maps/api/js?libraries=places', 'external');
 drupal_add_js('http://maps.stamen.com/js/tile.stamen.js?v1.2.3', 'external');
 drupal_add_js(drupal_get_path('module', 'ak_cp') .'/js/ak_cp.js', 'file');
 
@@ -35,10 +35,10 @@ if(empty($style)) $style = 'style1';
                         <span></span>
                     </button>
                     <a class="navbar-brand overlay-header-logo" href="#home">
-                    	<img src="<?php print $base_url.'/'.path_to_theme();?>/logo.png" alt="logo" role="banner">
+                    	<img src="<?php print $base_url.'/'.path_to_theme();?>/logo.jpg" alt="logo" role="banner">
                    	</a> 
 		  			<a class="navbar-brand normal-header-logo" href="#home">
-                    	<img src="<?php print $base_url.'/'.path_to_theme();?>/logo-black.png" alt="logo" role="banner">
+                    	<img src="<?php print $base_url.'/'.path_to_theme();?>/logo-black.jpg" alt="logo" role="banner">
                    	</a>
                 </div>
                 <div class="collapse navbar-collapse navbar-right" id="navigation-menu">
@@ -63,10 +63,10 @@ if(empty($style)) $style = 'style1';
                         <span></span>
                     </button>
                     <a class="navbar-brand overlay-header-logo" href="#home"> 
-                        <img src="<?php print $base_url.'/'.path_to_theme();?>/logo.png" alt="logo" role="banner">
+                        <img src="<?php print $base_url.'/'.path_to_theme();?>/logo.jpg" alt="logo" role="banner">
                     </a> 
                     <a class="navbar-brand normal-header-logo" href="#home"> 
-                        <img src="<?php print $base_url.'/'.path_to_theme();?>/logo-black.png" alt="logo" role="banner">
+                        <img src="<?php print $base_url.'/'.path_to_theme();?>/logo-black.jpg" alt="logo" role="banner">
                     </a>
                 </div>
                 
@@ -91,7 +91,7 @@ if(empty($style)) $style = 'style1';
         <nav id="nav-side">
             <div class="logo">
                	<a href="#home" class="move">
-                	<img src="<?php print $base_url.'/'.path_to_theme();?>/logo-black.png" alt="">
+                	<img src="<?php print $base_url.'/'.path_to_theme();?>/logo-black.jpg" alt="">
                	</a> 
             </div>
             <ul id="main-menu" class="nav">
