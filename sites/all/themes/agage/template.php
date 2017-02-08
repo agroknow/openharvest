@@ -6,7 +6,7 @@ function agage_preprocess_html(&$variables){
 	drupal_add_css('http://fonts.googleapis.com/css?family=PT+Serif:400,700', array('type' => 'external','media' => 'all'));
 	drupal_add_css('http://fonts.googleapis.com/css?family=Raleway:400,600,700,800', array('type' => 'external','media' => 'all'));
 	drupal_add_js(path_to_theme().'/js/update.js', array('type' => 'file', 'scope' => 'header'));
-	drupal_add_js('https://maps.googleapis.com/maps/api/js', array('type' => 'external', 'scope' => 'header'));
+	drupal_add_js('https://maps.googleapis.com/maps/api/js?libraries=places', array('type' => 'external', 'scope' => 'header'));
 	drupal_add_js('http://code.jquery.com/jquery-latest.min.js', array('type' => 'external', 'scope' => 'header'));
 	
 	if(!empty($_REQUEST["style"])){
