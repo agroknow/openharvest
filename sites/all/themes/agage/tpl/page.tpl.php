@@ -6,7 +6,7 @@ global $base_url;
 	if (!empty($tabs['#primary']) || !empty($tabs['#secondary'])):
 		print render($tabs);
 	endif;
-	print $messages;
+	  print $messages;
 	//unset($page['content']['system_main']['default_message']);
 ?>
 <div id="pageWrapper" class="clearfix">
