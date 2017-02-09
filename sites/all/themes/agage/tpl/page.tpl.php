@@ -19,6 +19,7 @@ global $base_url;
             </div>
       	</div>
         <?php endif; ?>
+    <?php print render($page['bottom_content']); ?>
    	</div>
 </div>
 
