@@ -33,7 +33,7 @@
  *
  * @see template_preprocess_search_api_page_results()
  */
-
+$sidebar = block_get_blocks_by_region('sidebar');
 ?>
 <div class="<?php print $classes;?>">
   <?php if ($result_count): ?>
@@ -41,10 +41,21 @@
   <?php endif; ?>
   <?php print render($spellcheck); ?>
   <?php if ($result_count): ?>
+    <div class="row">
     <h2><?php print t('Search results');?></h2>
+    <div class="col-md-9">
     <ol class="search-results">
       <?php print render($search_results); ?>
     </ol>
+    </div>
+    <aside>
+                        <div class="col-md-3">
+                            <div class="blog-siderbar">
+                                <?php print render($sidebar); ?>
+                                    </div>
+                                </div>
+                            </aside>
+                            </div>
     <?php print render($pager); ?>
   <?php else : ?>
     <?php if(!empty($keys)) { ?>
