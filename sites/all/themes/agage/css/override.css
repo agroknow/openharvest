@@ -20,3 +20,48 @@
 	padding-top: 40px;
 	padding-bottom: 40px;	
 }
+
+/* Search styles */
+.discovery-search .form-item {
+	display: inline-block;
+}
+
+.discovery-search label {
+	display: none;
+}
+
+.discovery-search .form-text,
+.discovery-search .form-submit{
+	padding: 13px;
+
+}
+.discovery-search .form-text{
+	width: 800px;
+}
+
+.discovery-search .form-submit{
+	width: 100px;
+	margin-left: -108px;
+	border: none;
+}
+
+.owl-stage .owl-item {
+	float: left;
+}
+
+.owl-nav {
+	position: relative;
+}
+
+.owl-nav .owl-prev,.owl-nav .owl-next {
+	position: absolute;
+}
+
+.owl-prev {
+	left: 0;
+}
+
+
+.owl-next {
+	right: 0;
+}

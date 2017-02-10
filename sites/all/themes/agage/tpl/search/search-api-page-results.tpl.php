@@ -46,8 +46,10 @@
       <?php print render($search_results); ?>
     </ol>
     <?php print render($pager); ?>
-  <?php endif; /* ?><?php else : ?>
+  <?php else : ?>
+    <?php if(!empty($keys)) { ?>
     <h2><?php print t('Your search yielded no results.');?></h2>
     <?php print $no_results_help; ?>
-  <?php endif; */ ?>
+    <?php } ?>
+  <?php endif; ?>
 </div>
