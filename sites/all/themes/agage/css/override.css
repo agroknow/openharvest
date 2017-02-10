@@ -65,3 +65,7 @@
 .owl-next {
 	right: 0;
 }
+
+.owl-dots {
+	display: none;
+}
