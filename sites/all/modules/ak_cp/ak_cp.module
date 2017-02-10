@@ -26,3 +26,15 @@ function ak_cp_library() {
 
   return $libraries;
 }
+
+/**
+ * Implements hook_js_alter()
+ * Fix owl slider scripts sequence
+ */
+function  ak_cp_js_alter(&$javascript) {
+  foreach ($javascript as $key => $value) {
+    if(strpos($key, 'owl') !== false) {
+      $javascript[$key]['scope'] = 'header'; 
+    }
+  }
+}
