@@ -132,7 +132,7 @@ function search_api_page_view($id, $keys = NULL, $overridden_options = array()) 
  */
 function template_preprocess_search_api_page_full_page(&$variables) {
   $machine_name = $variables['results']['#page']->machine_name;
-  $variables['theme_hook_suggestions'][] = 'search-api-page-full-page__' . $machine_name;
+  $variables['theme_hook_suggestions'][] = 'search_api_page_full_page__' . $machine_name;
 }
 
 /**
