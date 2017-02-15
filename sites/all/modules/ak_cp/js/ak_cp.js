@@ -1,11 +1,20 @@
 (function($) {
     $(document).ready(function () {
-
+        
             var searchControl;
             var map;
-            var markers = null;
+            var dataPointMarkers = null;
             var $info = $('#info');
             var $map = $('#map');
+            var networkColors = {
+                'Agris':'#8342f4',
+                'GLN':'#42eef4'
+            };
+            var typeColors = {
+                'organization':'#f47d42',
+                'data_point':'#e5f442',
+                'initiative':'#f4425f',
+            };
             var resize = function () {
                 $map.height($(window).height() - $('div.navbar').outerHeight());
 
@@ -26,24 +35,37 @@
                  
                     $.getJSON( siteUrl + "/networks-data", function( orgdata ) {
                         relations = orgdata;
-                        var t0 = performance.now();
+                        //var t0 = performance.now();
                         startmap();
-                        var t1 = performance.now();
-                        console.log("Call to doSomething took " + (t1 - t0) + " milliseconds.")
+                        //var t1 = performance.now();
+                        //console.log("Call to doSomething took " + (t1 - t0) + " milliseconds.")
                 });
              });
             
             function startmap() {
-            map = L.map('map',{ zoomControl: false }).setView([44.715514, -112.148438], 4);
-            new L.Control.Zoom({ position: 'bottomleft' }).addTo(map);
+            map = L.map('map', { 
+                zoomControl: false,
+                zoomsliderControl: false,
+            }).setView([44.715514, -112.148438], 4);
+
+            new L.Control.Zoomslider({ position: 'bottomleft' }).addTo(map);
 
             // Add the Stamen toner tiles as a base layer
-            var baseLayer = new L.StamenTileLayer('toner', {
-                detectRetina: true
-            }).addTo(map);
-
+            // var baseLayer = new L.StamenTileLayer('toner', {
+            //     detectRetina: true
+            // }).addTo(map);
+            //Set the map tile (check http://leaflet-extras.github.io/leaflet-providers/preview/index.html)
+            var Stamen_Watercolor = L.tileLayer('http://stamen-tiles-{s}.a.ssl.fastly.net/watercolor/{z}/{x}/{y}.{ext}', {
+                attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+                subdomains: 'abcd',
+                minZoom: 1,
+                maxZoom: 16,
+                ext: 'png'
+            });
+            Stamen_Watercolor.addTo(map);
+            
             // Add a layer control
-            var layerControl = L.control.layers().addTo(map);
+            //var layerControl = L.control.layers().addTo(map);
 
             // Add a legend control
             // var legendControl = L.control.legend({
@@ -55,17 +77,16 @@
             //     return value.type !== 'Collection';
             // });
 
-            // Create a lookup of airports by code.  NOTE:  this is easy, but non-optimal, particularly with a large dataset
-            // Ideally, the lookup would have already been created on the server or created and imported directly
+            // Create a lookup of entities by nid. 
             //var mapDataLookup = L.GeometryUtils.arrayToMap(mapData, 'nid');
 
-            // Group flight data by nid code
+            // Group data by nid code
             var mapDataPerType = _.groupBy(mapData, function (value) {
                 return (value.type !== 'data_point') ? 'organization' : 'data_point' ;
             });
 
             var orgs = L.GeometryUtils.arrayToMap(mapDataPerType.organization, 'nid');
-            var cols = L.GeometryUtils.arrayToMap(mapDataPerType.data_point, 'nid');
+            var dpoints = L.GeometryUtils.arrayToMap(mapDataPerType.data_point, 'nid');
 
             //console.log(mapDataPerType);
             // Group flight data by nid code
@@ -79,7 +100,7 @@
             });
 
             // Organizations by network
-            var airlineLookup = _.groupBy(relations, function (value) {
+            var relationship = _.groupBy(relations, function (value) {
                 return value.from;
             });
 
@@ -96,15 +117,15 @@
 
             var count = 0;
 
-            // Get an airport location.  This function looks up an airport from a provided airport code
+            // Get an node location.  This function looks up an node from a provided node code
             var getLocation = function (context, locationField, fieldValues, callback) {
                 var key = fieldValues[0];
-                var airport = orgs[key];
+                var node = orgs[key];
                 //console.log(key);
                 var location;
 
-                if (airport) {
-                    var latlng = new L.LatLng(Number(airport.lat), Number(airport.lon));
+                if (node) {
+                    var latlng = new L.LatLng(Number(node.lat), Number(node.lon));
                     location = {
                         location: latlng,
                         text: key,
@@ -128,19 +149,27 @@
                 includeLayer: function (record) {
                     return false;
                 },
+
                 getIndexKey: function (location, record) {
                     return record.from + '_' + record.to;
                 },
+
                 setHighlight: function (style) {
                     style.opacity = 1.0;
 
                     return style;
                 },
+
                 unsetHighlight: function (style) {
                     style.opacity = 0.5;
 
                     return style;
                 },
+
+                getLocationText: function (record){
+                    return '';
+                },
+
                 layerOptions: {
                     
                     fill: false,
@@ -180,14 +209,15 @@
                         title: function (value) {
                             return value;
                         },
+                        color: function (value) {
+                            return networkColors[value];
+                        },
+                        weight: 1,
                         /*weight: new L.LinearFunction([0, 1], [maxCount, 14]),
                         color: new L.HSLHueFunction([0, 200], [maxCount, 330], {
                             outputLuminosity: '60%'
                         }),
-                        displayName: 'Flightsf'*/
-                        weight: 2,
-                        color: '#ccc',
-                        
+                        displayName: '',*/ 
                     }
                 },
                 onEachRecord: function (layer, record, location) {
@@ -211,9 +241,8 @@
                 displayOptions: {
                     'type': {
                         color: function (value) {
-                            return value === 'organization' ? '#ccc' : '#000' ;
+                            return typeColors[value];
                         }
-                        //color: '#CCCCCC'
                     },
                     'title': {
                         title: function (value) {
@@ -235,14 +264,14 @@
                     return Number(record.nid) > 0;
                 },
                 setIcon: function (record, options) {
-                    var html = '<div><i class="fa fa-building"></i><!--<span class="code">' + record.title + '</span>--></div>';
+                    var html = '<div title="' + record.title + '"><i class="fa fa-circle-o"></i><!--<span class="code">' + record.title + '</span>--></div>';
                     var $html = $(html);
                     var $i = $html.find('i');
 
                     L.StyleConverter.applySVGStyle($i.get(0), options);
 
                     //var directFlights = L.Util.getFieldValue(record, 'nid');
-                    var size = sizeFunction.evaluate(100);
+                    var size = sizeFunction.evaluate(80);
 
                     $i.width(size);
                     $i.height(size);
@@ -260,14 +289,15 @@
                     var icon = new L.DivIcon({
                         iconSize: new L.Point(size, size),
                         iconAnchor: new L.Point(size / 2, size / 2),
-                        className: 'airport-icon',
+                        className: 'icon',
                         html: $html.wrap('<div/>').parent().html()
                     });
 
                     return icon;
                 },
                 onEachRecord: function (layer, record) {
-                    layer.bindPopup($(L.HTMLUtils.buildTable(record)).wrap('<div/>').parent().html());
+                    //layer.bindPopup($(L.HTMLUtils.buildTable(record)).wrap('<div/>').parent().html());
+                    layer.bindPopup(record.title + '<br />' + '..');
                     //layer.on('click', function () {
                         // $info.empty();
                         // $info.append($(L.HTMLUtils.buildTable(record)).wrap('<div/>').parent().html());
@@ -280,92 +310,107 @@
                 }
             };
 
-            var airportsLayer = new L.MarkerDataLayer(orgs, markerLayerOptions);
-            var collectionsLayer = new L.MarkerDataLayer(cols, markerLayerOptions);
+            var organizationsLayer = new L.MarkerDataLayer(orgs, markerLayerOptions);
+            var dataPointsLayer = new L.MarkerDataLayer(dpoints, markerLayerOptions);
             
-            markers = new L.MarkerClusterGroup();
-            markers.addLayer(collectionsLayer); 
+            dataPointMarkers = new L.MarkerClusterGroup();
+            dataPointMarkers.addLayer(dataPointsLayer); 
 
-            map.addLayer(markers); //Add collections layer
-            map.addLayer(airportsLayer); //Add organizations Layer
+            map.addLayer(dataPointMarkers); //Add collections layer
+            map.addLayer(organizationsLayer); //Add organizations Layer
 
-            layerControl.addOverlay(airportsLayer, 'Organizations');
-            layerControl.addOverlay(markers, 'Data points');
+            map.removeLayer(organizationsLayer);
 
-            // Iterate through the keys in the airlineLookup object.  Each key is an nid code
-            for (var key in airlineLookup) {
+            //layerControl.addOverlay(organizationsLayer, 'Organizations');
+            //layerControl.addOverlay(dataPointMarkers, 'Data points');
+
+            // Iterate through the keys in the relationship object.  Each key is an nid code
+            // Disable for now
+            if(false) {
+            for (var key in relationship) {
 
                 if (key !== 'all') {
                     // Create a graph layer that draws lines from the location in the fromField to the location in the toField.
-                    // In this case, we'll use a custom locationMode and implement the getLocation function to lookup the airport
-                    // location from the airport data we have available.
-                    var airportOptions = L.extend(options, {
+                    // In this case, we'll use a custom locationMode and implement the getLocation function to lookup the node
+                    // location from the node data we have available.
+                    var dataOptions = L.extend(options, {
                         includeLayer: function (record) {
                             return record.from === key;
                         }
                     })
 
-                    var flightLayer = new L.Graph(relations, airportOptions);
+                    var globalLayer = new L.Graph(relations, dataOptions);
                     
-                    layerControl.addOverlay(flightLayer, airlineLookup[key][0].Network);
+                    layerControl.addOverlay(globalLayer, relationship[key][0].Network);
 
                     if (count === 0) {
                         
                         // Add the layers we want to display to the legend
                         // Since all group lines use the same weight and color scales, just add the first layer to the legend
-                        //legendControl.addLayer(flightLayer);
+                        //legendControl.addLayer(globalLayer);
 
                         // Add each layer to the map
-                        //map.addLayer(flightLayer);
+                        //map.addLayer(globalLayer);
                     }
                     count++;
                 }
 
             }
+            }
+
             //var searchLayer = L.layerGroup().addTo(map);
             //... adding data in searchLayer ...
 
-            new L.Control.GPlaceAutocomplete({position: 'topleft'}).addTo(map);
+            //Do not add the google places control
+            //new L.Control.GPlaceAutocomplete({position: 'topleft'}).addTo(map);
 
     //console.log(L.Control.Search);
     //searchLayer is a L.LayerGroup contains searched markers
 
     //Add a custom control
     // create the control
-    var command = L.control({position: 'topleft'});
+    var customControl = L.control({position: 'topleft'});
 
-    command.onAdd = function (map) {
-        var div = L.DomUtil.create('div', 'command');
+    customControl.onAdd = function (map) {
+        var div = L.DomUtil.create('div', 'customControl');
         var layersToSelect = ['Organizations','Collections'];
-        var html = '<ul id="search-select" class="list-unstyled"><li class="init">-</li>';
+        var html = '<select class="selectpicker" style="display:none;">';
         for (var i = 0; i < layersToSelect.length; i++) {
-                html += '<li id="' + layersToSelect[i] + '">' + layersToSelect[i] + '</li>';          
+                html += '<option value="' + layersToSelect[i] + '">' + layersToSelect[i] + '</option>';          
             }
-            html += '</ul>';
+            html += '</select>';
 
         //div.innerHTML = $('.leaflet-control-layers-overlays').html(); 
         div.innerHTML = html; 
         return div;
     };
 
-    command.addTo(map);
+    //Do not add the custom control for this version
+    //customControl.addTo(map);
+    //$('.selectpicker').selectpicker();
+
     searchControl = new L.Control.Search({
-            layer: airportsLayer,
+            layer: organizationsLayer,
             propertyName: 'searchtext',
             initial: false,
-            collapsed: false
+            collapsed: false,
+            autoResize: false,
+            textPlaceholder: ' Type something to search... ',
+            minLength: 3,
         });
+        //Do not add the searchcontrol
+        //map.addControl( searchControl );
 
-            map.addControl( searchControl );
-
-    $('.command li').on("click", handleCommand);
+    $('.customControl select').on("change", handlecustomControl);
 
     // add the event handler
-    function handleCommand() {
-
-       var index = $(this).index() - 1;
-       if(index !== -1)
-        searchControl.setLayer(layerControl._layers[index].layer);
+    function handlecustomControl() {
+       
+       var index = $(this).prop('selectedIndex');
+       if(index !== -1) {
+            map.removeLayer(layerControl._layers[index].layer);
+            searchControl.setLayer(layerControl._layers[index].layer);
+            }
     }
 
     //map.on('overlayadd', onOverlayAdd);
@@ -374,25 +419,28 @@
     //     console.log(layer);
     // });
 
+    //remove the organiations Layer
+    map.removeLayer(organizationsLayer);
+
     }
         function onOverlayAdd(e){
-            //do whatever
-            console.log(e.layer);
             searchControl.setLayer(e.layer);
             //searchControl.searchText('agecon');
         }
 
-            $("body").on("click", "#search-select .init", function() {
-                $(this).closest("ul").children('li:not(.init)').toggle();
-            });
+    // $("body").on("click", "#search-select .init", function() {
+    //     $(this).closest("ul").children('li:not(.init)').toggle();
+    // });
 
-    $("body").on("click", "#search-select li:not(.init)", function() {
-        var allOptions = $("#search-select").children('li:not(.init)');
-        allOptions.removeClass('selected');
-        $(this).addClass('selected');
-        $("ul").children('.init').html($(this).html());
-        allOptions.toggle();
+    // $("body").on("click", "#search-select li:not(.init)", function() {
+    //     var allOptions = $("#search-select").children('li:not(.init)');
+    //     allOptions.removeClass('selected');
+    //     $(this).addClass('selected');
+    //     $("ul").children('.init').html($(this).html());
+    //     allOptions.toggle();
+    // });
+
+
     });
 
-    });
 })(jQuery);
