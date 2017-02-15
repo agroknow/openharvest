@@ -14,12 +14,16 @@ function ak_cp_library() {
        drupal_get_path('module', 'ak_cp') . '/js/leaflet_dvf/dist/leaflet-dvf.js' => array(),
        drupal_get_path('module', 'ak_cp') . '/js/leaflet_google_places_autocomplete/src/js/leaflet-gplaces-autocomplete.js' => array(),
        drupal_get_path('module', 'ak_cp') . '/js/leaflet_search/src/leaflet-search.js' => array(),
+       drupal_get_path('module', 'ak_cp') . '/js/Leaflet.zoomslider/src/L.Control.Zoomslider.js' => array(),
+       drupal_get_path('module', 'ak_cp') . '/js/bootstrap_select/js/bootstrap-select.js' => array(),
        ),
    
     'css' => array(
       drupal_get_path('module', 'ak_cp') . '/js/leaflet_dvf/dist/css/dvf.css' => array(),
       drupal_get_path('module', 'ak_cp') . '/js/leaflet_google_places_autocomplete/dist/css/leaflet-gplaces-autocomplete.css' => array(),
-      drupal_get_path('module', 'ak_cp') . '/js/leaflet_search/dist/css/leaflet-search.css' => array(),
+      drupal_get_path('module', 'ak_cp') . '/js/leaflet_search/src/leaflet-search.css' => array(),
+      drupal_get_path('module', 'ak_cp') . '/js/Leaflet.zoomslider/src/L.Control.Zoomslider.css' => array(),
+      drupal_get_path('module', 'ak_cp') . '/js/bootstrap_select/css/bootstrap-select.css' => array(),
       ),
     
   );
