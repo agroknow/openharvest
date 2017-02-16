@@ -128,6 +128,66 @@ Zoom slider
 	border-radius: 100%;
 }
 
+body.front ,
+body.page-map {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+}
+
+body.front #pageWrapper,
+body.page-map #pageWrapper{
+	position: absolute;
+	top: 0;
+	bottom: 20%;
+	left: 0;
+	right: 0;
+}
+
+body.front #pageWrapper .contentWrapper ,
+body.page-map #pageWrapper .contentWrapper {
+	height: 100%;
+	min-height: 0;
+}
+
+
+body.front #map,
+body.page-map #map{
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	height: auto !important;
+}
+
+
+body.front #pageWrapper .tools-container ,
+body.page-map #pageWrapper .tools-container {
+	position: absolute;
+	top: 30px;
+	left: 0;
+	right: 0;
+	z-index: 1000;
+}
+
+body.front #page_footer,
+body.page-map #page_footer{
+	position: absolute;
+	top: 80%;
+	bottom: auto;
+}
+
+img {
+	max-width: 100%;
+}
+
+.footer-white {
+	background: #fff;
+}
+
 /*#search-select { 
     height: 30px;
     width: 150px;
@@ -159,4 +219,70 @@ a#submit { z-index: 1; }
   */
 .custom-popup .leaflet-popup-tip {
    background:#2c3e50;
+  }
+
+  .tools-container .add-resource {
+  	font-size: 28px;
+  	margin: 10px;
+  	padding: 3px;
+
+  }
+
+  .tools-container .add-resource:hover {
+  	color: #fff;
+  }
+
+  /* Marker Clusters */
+  /* colors */
+
+  .marker-cluster-small {
+  	background-color: rgba(204, 204, 0, 0.6);
+  }
+
+  .marker-cluster-small div {
+  	background-color: rgba(255, 255, 0, 0.6);
+  }
+
+  .marker-cluster-medium {
+  	background-color: rgba(204, 114, 0, 0.6);
+  }
+
+  .marker-cluster-medium div {
+  	background-color: rgba(255, 165, 0, 0.6);
+  }
+
+  .marker-cluster-large {
+  	background-color: rgba(204, 0, 0, 0.6)
+  }
+
+  .marker-cluster-large div {
+  	background-color: rgba(255, 0, 0, 0.6)
+  }
+
+  .marker-cluster span {
+  	font-weight: bold;
+  }
+
+  .marker-cluster-small div{
+	width: 20px;
+	height: 20px;
+  }
+
+  .marker-cluster-small span{
+	line-height: 20px;
+  }
+  
+  .marker-cluster-medium span{
+  	color: #fff;
+  }
+
+  .marker-cluster-large div{
+	width: 40px;
+	height: 40px;
+
+  }
+
+  .marker-cluster-large span{
+  	line-height: 40px;
+  	color: #fff;
   }

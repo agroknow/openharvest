@@ -10,11 +10,12 @@
                 'Agris':'#8342f4',
                 'GLN':'#42eef4'
             };
-            var typeColors = {
-                'organization':'#f47d42',
-                'data_point':'#e5f442',
-                'initiative':'#f4425f',
-            };
+            //moved to page--front.tpl and page--map.tpl
+            // var typeColors = {
+            //     'organization':'#f47d42',
+            //     'data_point':'#e5f442',
+            //     'initiative':'#f4425f',
+            // };
             var resize = function () {
                 $map.height($(window).height() - $('div.navbar').outerHeight());
 
@@ -48,21 +49,22 @@
                 zoomsliderControl: false,
             }).setView([44.715514, -112.148438], 4);
 
-            new L.Control.Zoomslider({ position: 'bottomleft' }).addTo(map);
+            new L.Control.Zoom({ position: 'bottomleft' }).addTo(map);
 
             // Add the Stamen toner tiles as a base layer
             // var baseLayer = new L.StamenTileLayer('toner', {
             //     detectRetina: true
             // }).addTo(map);
             //Set the map tile (check http://leaflet-extras.github.io/leaflet-providers/preview/index.html)
-            var Stamen_Watercolor = L.tileLayer('http://stamen-tiles-{s}.a.ssl.fastly.net/watercolor/{z}/{x}/{y}.{ext}', {
-                attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-                subdomains: 'abcd',
-                minZoom: 1,
-                maxZoom: 16,
-                ext: 'png'
-            });
-            Stamen_Watercolor.addTo(map);
+            
+            // var Stamen_Watercolor = L.tileLayer('http://stamen-tiles-{s}.a.ssl.fastly.net/watercolor/{z}/{x}/{y}.{ext}', {
+            //     attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+            //     subdomains: 'abcd',
+            //     minZoom: 1,
+            //     maxZoom: 16,
+            //     ext: 'png'
+            // });
+            customTile.addTo(map);
             
             // Add a layer control
             //var layerControl = L.control.layers().addTo(map);
@@ -313,7 +315,24 @@
             var organizationsLayer = new L.MarkerDataLayer(orgs, markerLayerOptions);
             var dataPointsLayer = new L.MarkerDataLayer(dpoints, markerLayerOptions);
             
-            dataPointMarkers = new L.MarkerClusterGroup();
+            dataPointMarkers = new L.MarkerClusterGroup({
+                iconCreateFunction: function (cluster) {
+                var myClass = ' marker-cluster-';
+                var rad;
+                var count = cluster.getChildCount();
+                if (count < 8) {
+                    myClass += 'small';
+                    rad = 30;
+                } else if (count < 60) {
+                    myClass += 'medium';
+                    rad = 40;
+                } else {
+                    myClass += 'large';
+                    rad = 50;
+                } 
+                return L.divIcon({ html: '<div><span>' + count + '</span></div>', className: 'marker-cluster' + myClass, iconSize: new L.Point(rad, rad)  });
+            },
+            });
             dataPointMarkers.addLayer(dataPointsLayer); 
 
             map.addLayer(dataPointMarkers); //Add collections layer
