@@ -1158,24 +1158,24 @@ address a {
 .navbar-nav > li > a {
   color: rgba(255, 255, 255, 0.8);
 }
-.top-nav-collapse .navbar-nav > li > a {
+/*.top-nav-collapse .navbar-nav > li > a {
   color: rgba(0, 0, 0, 0.4);
 }
 .top-nav-collapse .navbar-nav > li.active > a {
   color: #2d2d2d;
-}
-.default-nav .navbar-nav > li > a {
+}*/
+ .navbar-nav > li > a {
   color: rgba(0, 0, 0, 0.4);
 }
-.default-nav .navbar-nav > li.active > a {
+ .navbar-nav > li.active > a {
   color: #2d2d2d;
 }
-.top-nav-collapse,
+/*.top-nav-collapse,
 .cbp-popup-singlePage .cbp-popup-navigation-wrap,
 .default-nav {
   background: #ffffff;
   box-shadow: 1px 1px 3px rgba(80, 80, 80, 0.1);
-}
+}*/
 @media only screen and (max-width: 991px) {
   .navbar {
     background: #ffffff;

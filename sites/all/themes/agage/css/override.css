@@ -69,3 +69,59 @@
 .owl-dots {
 	display: none;
 }
+
+  /* Footer rules */
+  .logo-wrap {
+	position: relative;
+	display: inline-block;
+  }
+
+  .logo-wrap .version {
+    position: absolute;
+    right: 29px;
+    top: 0;
+    font-size: 12px;
+    font-weight: bold;
+    background: #fff;
+    padding: 10px 3px;
+    border-radius: 100%;
+    color: #000;
+  }
+
+  .footer-white .logo-wrap .version {
+	color: #fff;
+	background: #000;
+  }
+
+  .footer-main-logo {
+  	width: 300px;
+  }
+
+  .powered-txt {
+  	font-size: 22px;
+    color: #fff;
+    padding: 0 0 0 30px;
+  }
+	
+  .footer-white .powered-txt {
+	color: #000;
+  }	
+
+  .footer-sec-logo {
+  	width: 190px;
+  }
+
+  /* Misc css */
+.list-item {
+    padding: 0 0 12px 0;
+    font-size: 14px;
+} 
+
+.owl-carousel-block_28 .owl-nav {
+  padding-top: 30px;
+}
+
+.owl-nav > div {
+  cursor: pointer;
+  padding: 5px;
+}
