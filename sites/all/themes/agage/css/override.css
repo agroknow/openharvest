@@ -151,3 +151,7 @@ img {
   display: block !important;
 }
 
+.webform-component--disclaimer p {
+  font-size: 8px;
+  line-height : 12px;
+}
