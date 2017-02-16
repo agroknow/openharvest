@@ -1,0 +1,24 @@
+
+.ctools-modal-openharvest-modal-content .modal-scroll {
+	padding: 10px;
+}
+
+.ctools-modal-openharvest-modal-content #modal-content {
+	width: 100% !important;
+	height: auto !important;
+	box-shadow: none;
+	border: none;
+}
+
+.ctools-modal-openharvest-modal-content input.form-text {
+	max-width: 100%;
+}
+
+.ctools-modal-openharvest-modal-content .popups-close {
+
+}
+
+div.ctools-modal-content .modal-header.popups-title {
+	background-color: rgb(120, 173, 66);
+	padding: 15px 10px;
+}
