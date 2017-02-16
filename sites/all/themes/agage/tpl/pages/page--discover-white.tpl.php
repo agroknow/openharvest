@@ -23,4 +23,4 @@ global $base_url;
    	</div>
 </div>
 
-<?php require_once(drupal_get_path('theme','agage').'/tpl/footer.tpl.php'); ?>
+<?php require_once(drupal_get_path('theme','agage').'/tpl/footer-front.tpl.php'); ?>

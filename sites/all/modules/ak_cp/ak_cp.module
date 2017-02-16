@@ -9,9 +9,9 @@ function ak_cp_init() {
  $openharvest_style = array(
         'openharvest-modal-style' => array(
           'modalSize' => array(
-            'type' => 'scale',
-            // 'width' => 600,
-            // 'height' => 450,
+            'type' => 'fixed',
+             'width' => 600,
+             'height' => 450,
             // 'addWidth' => 0,
             // 'addHeight' => 20,
             // 'contentRight' => 0,

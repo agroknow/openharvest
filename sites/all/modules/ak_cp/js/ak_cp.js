@@ -47,7 +47,8 @@
             map = L.map('map', { 
                 zoomControl: false,
                 zoomsliderControl: false,
-            }).setView([44.715514, -112.148438], 4);
+            });
+            //.setView([44.715514, -112.148438], 4);
 
             new L.Control.Zoom({ position: 'bottomleft' }).addTo(map);
 
@@ -338,7 +339,7 @@
             map.addLayer(dataPointMarkers); //Add collections layer
             map.addLayer(organizationsLayer); //Add organizations Layer
 
-            map.removeLayer(organizationsLayer);
+            //map.removeLayer(organizationsLayer);
 
             //layerControl.addOverlay(organizationsLayer, 'Organizations');
             //layerControl.addOverlay(dataPointMarkers, 'Data points');
@@ -440,6 +441,9 @@
 
     //remove the organiations Layer
     map.removeLayer(organizationsLayer);
+    //fit markers
+    map.fitBounds(dataPointMarkers.getBounds());
+
 
     }
         function onOverlayAdd(e){

@@ -71,6 +71,13 @@
 }
 
   /* Footer rules */
+
+
+.footer-white {
+  background: #fff;
+}
+
+
   .logo-wrap {
 	position: relative;
 	display: inline-block;
@@ -78,8 +85,8 @@
 
   .logo-wrap .version {
     position: absolute;
-    right: 29px;
-    top: 0;
+    right: 0;
+    top: -17px;
     font-size: 12px;
     font-weight: bold;
     background: #fff;
@@ -94,11 +101,11 @@
   }
 
   .footer-main-logo {
-  	width: 300px;
+  	width: 200px;
   }
 
   .powered-txt {
-  	font-size: 22px;
+  	font-size: 18px;
     color: #fff;
     padding: 0 0 0 30px;
   }
@@ -108,10 +115,19 @@
   }	
 
   .footer-sec-logo {
-  	width: 190px;
+  	width: 110px;
   }
 
+#page_footer {
+  padding: 20px 0 !important;
+}
   /* Misc css */
+
+
+img {
+  max-width: 100%;
+}
+
 .list-item {
     padding: 0 0 12px 0;
     font-size: 14px;
@@ -125,3 +141,13 @@
   cursor: pointer;
   padding: 5px;
 }
+
+/* Navigation */
+.navbar-brand.hide {
+  display: none !important;
+}
+
+.navbar-brand.show {
+  display: block !important;
+}
+

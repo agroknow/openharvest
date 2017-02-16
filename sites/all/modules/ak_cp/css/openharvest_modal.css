@@ -5,7 +5,7 @@
 
 .ctools-modal-openharvest-modal-content #modal-content {
 	width: 100% !important;
-	height: auto !important;
+	height: 300px !important;
 	box-shadow: none;
 	border: none;
 }
