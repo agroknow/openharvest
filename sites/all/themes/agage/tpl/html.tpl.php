@@ -24,7 +24,7 @@
 <body id="page" data-spy="scroll" data-target=".navbar-nav" data-offset="80" class="appear-animate <?php print $classes;?>" <?php print $attributes;?>>
 	<div class="ip-header">
     	<div class="ip-logo">
-        	<img class="preloaderLogo center-block" src="<?php print $base_url.'/'.path_to_theme();?>/logo-black.jpg" alt="preloader">
+        	<img class="preloaderLogo center-block" src="<?php print $base_url.'/'.path_to_theme();?>/logo.png" alt="preloader">
        	</div>
   		<div class="ip-loader">
     		<svg class="ip-inner" width="60px" height="60px" viewBox="0 0 80 80">

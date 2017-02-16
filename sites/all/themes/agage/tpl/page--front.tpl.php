@@ -8,6 +8,21 @@ libraries_load('leaflet');
 drupal_add_library('leaflet_markercluster', 'leaflet_markercluster');
 
 drupal_add_library('ak_cp','ak_cp',FALSE);
+$tile_string = 'var customTile = L.tileLayer("http://stamen-tiles-{s}.a.ssl.fastly.net/watercolor/{z}/{x}/{y}.{ext}", {
+                attribution: \'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>\',
+                subdomains: "abcd",
+                minZoom: 1,
+                maxZoom: 16,
+                ext: "png"
+            });';
+
+$colors_string = 'var typeColors = {
+                organization:\'#f47d42\',
+                data_point:\'#f44242\',
+                initiative:\'#f4425f\',
+            };';
+
+drupal_add_js($tile_string . $colors_string, 'inline');
 
 //drupal_add_js('https://maps.googleapis.com/maps/api/js?libraries=places', 'external');
 drupal_add_js('http://maps.stamen.com/js/tile.stamen.js?v1.2.3', 'external');
@@ -21,6 +36,8 @@ if(!empty($_REQUEST["style"])){
 	$style = theme_get_setting('style', 'agage'); 
 }
 if(empty($style)) $style = 'style1';
+
+if (FALSE) {
 ?>
 
 <?php if($style == 'style1') { ?>
@@ -63,10 +80,10 @@ if(empty($style)) $style = 'style1';
                         <span></span>
                     </button>
                     <a class="navbar-brand overlay-header-logo" href="#home"> 
-                        <img src="<?php print $base_url.'/'.path_to_theme();?>/logo.jpg" alt="logo" role="banner">
+                        <img src="<?php print $base_url.'/'.path_to_theme();?>/logo.png" alt="logo" role="banner">
                     </a> 
                     <a class="navbar-brand normal-header-logo" href="#home"> 
-                        <img src="<?php print $base_url.'/'.path_to_theme();?>/logo-black.jpg" alt="logo" role="banner">
+                        <img src="<?php print $base_url.'/'.path_to_theme();?>/logo_neg.png" alt="logo" role="banner">
                     </a>
                 </div>
                 
@@ -119,7 +136,7 @@ if(empty($style)) $style = 'style1';
     </nav>
 </header>
 
-<?php } ?>
+<?php } } ?>
 
 <?php
 if($style == 'style4') {
@@ -128,13 +145,18 @@ if($style == 'style4') {
 	$body_class = '';
 }
 ?>
-<div id="pageWrapper" class="clearfix en-creative <?php print $body_class; ?>">
+<div id="pageWrapper" class="map-page clearfix en-creative <?php print $body_class; ?>">
     <div class="contentWrapper">
-          <div id="map"></div>
+          <div class="custom-popup" id="map"></div>
+          <div class="tools-container">
+          <!-- ctools-modal-openharvest-modal-style -->
+              <a class="ctools-use-modal  pull-right add-resource ctools-modal-openharvest-modal-style" href="modal_forms/nojs/webform/10171"><i class="fa fa-plus-circle" aria-hidden="true"></i></a>
+          </div>
+
 <?php  if($page['section_content']):?>
         <?php print render($page['section_content']); ?>
         <?php print render($page['top_content']); ?>
 <?php endif; ?>
     </div>
 </div>
-<?php require_once(drupal_get_path('theme','agage').'/tpl/footer.tpl.php'); ?>
+<?php require_once(drupal_get_path('theme','agage').'/tpl/footer-front.tpl.php'); ?>

@@ -26,7 +26,7 @@ if ($style != 'style1') {
             <?php if(FALSE) { ?>
             <div class="col-md-8">
             <h5 class="copyright text-uppercase">
-                <?php //print theme_get_setting('footer_copyright_message','agage'); ?>
+				<?php //print theme_get_setting('footer_copyright_message','agage'); ?>
             </h5>
             <!--/ Footer Copy-->
             <!--Footer Social Icon-->
