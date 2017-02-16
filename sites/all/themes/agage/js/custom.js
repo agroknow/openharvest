@@ -601,9 +601,9 @@
 
         if (menuStyle == 'nav-top') {
             if ($(".navbar").offset().top > 200) {
-                $(".navbar-fixed-top").addClass("top-nav-collapse");
+                $(".navbar-fixed-top").addClass("top-nav-collapse").addClass('navbar-inverse');
             } else {
-                $(".navbar-fixed-top").removeClass("top-nav-collapse");
+                $(".navbar-fixed-top").removeClass("top-nav-collapse").removeClass('navbar-inverse');
             }
         }      
        
@@ -695,10 +695,10 @@
 
         if (menuStyle == 'nav-top') {
             if ($(".navbar").offset().top > 200) {
-                $(".navbar-fixed-top").addClass("top-nav-collapse");
+                $(".navbar-fixed-top").addClass("top-nav-collapse").addClass('navbar-inverse');
                 $(".navbar-fixed-top").removeClass("default-nav");
             } else {
-                $(".navbar-fixed-top").removeClass("top-nav-collapse");
+                $(".navbar-fixed-top").removeClass("top-nav-collapse").removeClass('navbar-inverse');
             }
         }
         else if (menuStyle == 'nav-side') {
