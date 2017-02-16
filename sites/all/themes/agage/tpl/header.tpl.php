@@ -37,10 +37,10 @@
                         <span></span>
                         <span></span>
                     </button>
-                    <a class="navbar-brand overlay-header-logo" href="#home"> 
+                    <a class="navbar-brand overlay-header-logo" href="<?php print $base_url ?>"> 
                         <img src="<?php print $base_url.'/'.path_to_theme();?>/logo.png" alt="logo" role="banner">
                     </a> 
-                    <a class="navbar-brand normal-header-logo" href="#home"> 
+                    <a class="navbar-brand normal-header-logo" href="<?php print $base_url ?>"> 
                         <img src="<?php print $base_url.'/'.path_to_theme();?>/logo_neg.png" alt="logo" role="banner">
                     </a>
                 </div>

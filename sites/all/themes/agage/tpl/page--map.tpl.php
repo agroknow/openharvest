@@ -48,10 +48,10 @@ if (FALSE) {
                         <span></span>
                         <span></span>
                     </button>
-                    <a class="navbar-brand overlay-header-logo" href="#home">
+                    <a class="navbar-brand overlay-header-logo" href="<?php print $base_url ?>">
                       <img src="<?php print $base_url.'/'.path_to_theme();?>/logo.jpg" alt="logo" role="banner">
                     </a> 
-            <a class="navbar-brand normal-header-logo" href="#home">
+            <a class="navbar-brand normal-header-logo" href="<?php print $base_url ?>">
                       <img src="<?php print $base_url.'/'.path_to_theme();?>/logo-black.jpg" alt="logo" role="banner">
                     </a>
                 </div>
@@ -76,10 +76,10 @@ if (FALSE) {
                         <span></span>
                         <span></span>
                     </button>
-                    <a class="navbar-brand overlay-header-logo" href="#home"> 
+                    <a class="navbar-brand overlay-header-logo" href="<?php print $base_url ?>"> 
                         <img src="<?php print $base_url.'/'.path_to_theme();?>/logo.jpg" alt="logo" role="banner">
                     </a> 
-                    <a class="navbar-brand normal-header-logo" href="#home"> 
+                    <a class="navbar-brand normal-header-logo" href="<?php print $base_url ?>"> 
                         <img src="<?php print $base_url.'/'.path_to_theme();?>/logo-black.jpg" alt="logo" role="banner">
                     </a>
                 </div>
@@ -104,7 +104,7 @@ if (FALSE) {
         </div>
         <nav id="nav-side">
             <div class="logo">
-                <a href="#home" class="move">
+                <a href="<?php print $base_url ?>" class="move">
                   <img src="<?php print $base_url.'/'.path_to_theme();?>/logo-black.jpg" alt="">
                 </a> 
             </div>
