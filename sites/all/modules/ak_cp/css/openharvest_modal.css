@@ -27,6 +27,10 @@ div.ctools-modal-content .modal-header.popups-title {
 	padding: 15px 10px;
 }
 
+body.page-black div.ctools-modal-content .modal-header.popups-title {
+	background-color: #202020;
+}
+
 .ctools-modal-openharvest-modal-content-fixed p,
 .ctools-modal-openharvest-modal-content-scale p {
 	font-size: 14px;
