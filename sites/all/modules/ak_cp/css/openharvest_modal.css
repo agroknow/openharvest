@@ -1,24 +1,34 @@
 
-.ctools-modal-openharvest-modal-content .modal-scroll {
+.ctools-modal-openharvest-modal-content-fixed .modal-scroll, 
+.ctools-modal-openharvest-modal-content-scale .modal-scroll {
 	padding: 10px;
 }
 
-.ctools-modal-openharvest-modal-content #modal-content {
-	width: 100% !important;
-	height: 300px !important;
+.ctools-modal-openharvest-modal-content-scale #modal-content {
+	height: 100% !important;
 	box-shadow: none;
 	border: none;
 }
 
-.ctools-modal-openharvest-modal-content input.form-text {
-	max-width: 100%;
+.ctools-modal-openharvest-modal-content-fixed #modal-content {
+	width: 100% !important;
+	height: 370px !important;
+	box-shadow: none;
+	border: none;
 }
 
-.ctools-modal-openharvest-modal-content .popups-close {
-
+.ctools-modal-openharvest-modal-content-fixed input.form-text,
+.ctools-modal-openharvest-modal-content-scale input.form-text {
+	max-width: 100%;
 }
 
 div.ctools-modal-content .modal-header.popups-title {
 	background-color: rgb(120, 173, 66);
 	padding: 15px 10px;
+}
+
+.ctools-modal-openharvest-modal-content-fixed p,
+.ctools-modal-openharvest-modal-content-scale p {
+	font-size: 14px;
+	line-height: 23px;
 }

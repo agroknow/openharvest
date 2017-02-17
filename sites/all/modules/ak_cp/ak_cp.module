@@ -7,7 +7,7 @@
 
 function ak_cp_init() {
  $openharvest_style = array(
-        'openharvest-modal-style' => array(
+        'openharvest-modal-style-fixed' => array(
           'modalSize' => array(
             'type' => 'fixed',
              'width' => 600,
@@ -22,7 +22,30 @@ function ak_cp_init() {
             'background-color' => '#000',
           ),
           'animation' => 'fadeIn',
-          'modalTheme' => 'openharvest_modal',
+          'modalTheme' => 'openharvest_modal_fixed',
+          // Customize the AJAX throbber like so:
+          // This function assumes the images are inside the module directory's "images"
+          // directory:
+          // ctools_image_path($image, $module = 'ctools', $dir = 'images')
+          // 'throbber' => theme('image', array('path' => ctools_image_path('ajax-loader.gif', 'happy'), 'alt' => t('Loading...'), 'title' => t('Loading'))),
+          // 'closeImage' => theme('image', array('path' => ctools_image_path('modal-close.png', 'happy'), 'alt' => t('Close window'), 'title' => t('Close window'))),
+        ),
+        'openharvest-modal-style-scale' => array(
+          'modalSize' => array(
+            'type' => 'scale',
+            // 'width' => 600,
+            // 'height' => 450,
+            // 'addWidth' => 0,
+            // 'addHeight' => 20,
+            // 'contentRight' => 0,
+            // 'contentBottom' => 0,
+          ),
+          'modalOptions' => array(
+            'opacity' => .4,
+            'background-color' => '#000',
+          ),
+          'animation' => 'fadeIn',
+          'modalTheme' => 'openharvest_modal_scale',
           // Customize the AJAX throbber like so:
           // This function assumes the images are inside the module directory's "images"
           // directory:
