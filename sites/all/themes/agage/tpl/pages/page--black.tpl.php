@@ -149,7 +149,7 @@ $body_class = 'map-page';
           <div class="custom-popup" id="map"></div>
           <div class="tools-container">
           <!-- ctools-modal-openharvest-modal-style -->
-              <a class="ctools-use-modal  pull-right add-resource ctools-modal-openharvest-modal-style" href="modal_forms/nojs/webform/10171"><i class="fa fa-plus-circle" aria-hidden="true"></i></a>
+              <a class="ctools-use-modal  pull-right add-resource ctools-modal-openharvest-modal-style-fixed" href="modal_forms/nojs/webform/10171"><i class="fa fa-plus-circle" aria-hidden="true"></i></a>
           </div>
 
 <?php  if($page['section_content']):?>
