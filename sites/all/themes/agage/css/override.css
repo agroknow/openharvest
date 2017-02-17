@@ -159,3 +159,36 @@ img {
 .cbp-l-grid-blog-title.small {
   font-size: 20px;
 }
+
+.owl-prev, .owl-next {
+  text-indent: -9000px;
+}
+
+.owl-prev {
+  left: 13px;
+}
+
+.owl-prev {
+  right: 13px;
+}
+
+.owl-prev:after {
+  content: '\f104';
+  font-family: 'Fontawesome';
+  position: absolute;
+  top: 0;
+  left: 0;
+  text-indent: 0;
+  font-size: 50px;
+} 
+
+.owl-next:after {
+  content: '\f105';
+  font-family: 'Fontawesome';
+  position: absolute;
+  top: 0;
+  left: 0;
+  text-indent: 0;
+  font-size: 50px;
+} 
+
