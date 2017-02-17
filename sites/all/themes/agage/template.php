@@ -119,7 +119,17 @@ function agage_preprocess_html(&$variables){
 	);
 	drupal_add_html_head($update, 'update');
 
-	
+	$override = array(
+	'#tag' => 'link',
+	'#attributes' => array(
+		'href' => base_path().path_to_theme().'/css/override.css', 
+		'rel' => 'stylesheet',
+		'type' => 'text/css',
+		),
+	'#weight' => 8,
+	);
+	drupal_add_html_head($override, 'override');
+
 }
 
 // Remove superfish css files.

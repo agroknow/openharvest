@@ -15,7 +15,6 @@ stylesheets[all][] = css/icons/ionicons.min.css
 stylesheets[all][] = css/animate.css
 stylesheets[all][] = css/owl/owl.carousel.css
 stylesheets[all][] = css/cubeportfolio/cubeportfolio.min.css
-stylesheets[all][] = css/override.css
 
 
 ; Add a script
