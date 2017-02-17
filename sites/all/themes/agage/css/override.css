@@ -31,18 +31,30 @@
 }
 
 .discovery-search .form-text,
-.discovery-search .form-submit{
-	padding: 13px;
 
+.form-submit{
+	padding: 13px;
+  border: none;
+  transition: all .3s;
+    -ms-transition: all .3s;
+    -moz-transition: all .3s;
+    -o-transition: all .3s;
+    -webkit-transition: all .3s;
 }
+
+.form-submit:hover {
+  background-color: #202020;
+  color: #fff;
+}
+
+
 .discovery-search .form-text{
 	width: 800px;
 }
 
 .discovery-search .form-submit{
 	width: 100px;
-	margin-left: -108px;
-	border: none;
+	margin-left: -99px;
 }
 
 .owl-stage .owl-item {
@@ -123,7 +135,27 @@
   padding: 25px 0 !important;
 }
   /* Misc css */
+#modal-content .webform-component {
+  padding: 5px;
+}
 
+#modal-content .webform-component label {
+  display: block;
+  float: none;
+}
+
+input.form-text {
+  padding: 10px;
+}
+
+.toggleme {
+  padding: 5px 0;  
+  cursor: pointer;
+}
+
+#modal-content .toggleme {
+  font-size: 12px;
+}
 
 img {
   max-width: 100%;
@@ -150,11 +182,6 @@ img {
 
 .navbar-brand.show {
   display: block !important;
-}
-
-.webform-component--disclaimer p {
-  font-size: 8px;
-  line-height : 12px;
 }
 
 .cbp-l-grid-blog-title.small {
