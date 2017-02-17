@@ -23,6 +23,7 @@ scripts[] = js/plugins/plugin.js
 scripts[] = js/custom.js
 scripts[] = js/blog.js
 scripts[] = js/count.js
+scripts[] = js/last.js
 
 ;Core regions
 regions[logo_header] = 'Logo Header'
