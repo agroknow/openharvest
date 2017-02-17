@@ -20,8 +20,8 @@ global $base_url;
     <div class="container">
       	<div class="banner">
         	<div class="center-content">
-          		<p class="text-uppercase"><?php print t('Welcome to our');?></p>
-          		<h1 class="text-uppercase"><?php print drupal_get_title(); ?></h1>
+          		<!-- <p class="text-uppercase"><?php //print t('Find Open Data'); ?></p> -->
+          		<h1 class="text-uppercase"><?php print t('Find Open Data'); ?></h1>
           		<div class="discovery-search">
           		<?php print render($form); ?>
           		</div>

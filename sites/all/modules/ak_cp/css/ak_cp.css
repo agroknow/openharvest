@@ -239,6 +239,10 @@ a#submit { z-index: 1; }
 
   /* Marker Clusters */
   /* colors */
+  .marker-cluster,
+  .marker-cluster div {
+    border-radius: 100%;
+  }
 
   .marker-cluster-small {
   	background-color: rgba(204, 204, 0, 0.6);

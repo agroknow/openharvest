@@ -23,8 +23,8 @@ $val='footer-white';
               <span class="version">alpha</span>
               </div>
               <div class="powered-wrap pull-right">
-              <span class="powered-txt">Powered by</span>
-              <img class="footer-sec-logo" src="<?php print $base_url.'/'.path_to_theme();?>/ak_logo.png" alt="logo" role="banner">
+              <span class="powered-txt"><?php print theme_get_setting('footer_copyright_message','agage'); ?></span>
+              <!-- <img class="footer-sec-logo" src="<?php // print $base_url.'/'.path_to_theme();?>/ak_logo.png" alt="logo" role="banner"> -->
               </div>
             </div>
             <?php if(FALSE) { ?>
