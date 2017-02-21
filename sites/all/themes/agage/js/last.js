@@ -3,6 +3,7 @@
 		$('html').on('click', '.toggleme', function() {
 			$(this).next('.togg').toggle();
 		});
-		$('body').css('padding-top', $('.navbar-fixed-top').height() + 10);
+		var height = $('.navbar-fixed-top').height();
+		$('body').css('padding-top', $('body').hasClass('admin-menu') ?  height + 10 : height + 10);
 	});
 })(jQuery);
