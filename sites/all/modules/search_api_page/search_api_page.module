@@ -76,6 +76,7 @@ function search_api_page_theme() {
       'form' => array(),
       'results' => array(),
     ),
+    'file' => 'search_api_page.pages.inc',
     'template' => 'search-api-page-full-page',
   );
   $themes['search_api_page_results'] = array(

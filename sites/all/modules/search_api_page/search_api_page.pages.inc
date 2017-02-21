@@ -38,7 +38,7 @@ function search_api_page_view($id, $keys = NULL, $overridden_options = array()) 
   }
 
   $ret = array(
-    '#theme' => "search_api_page_full_page__{$page->machine_name}",
+    '#theme' => 'search_api_page_full_page',
   );
   $ret['#contextual_links']['search_api_page'] = array(
     'admin/config/search/search_api/page',
@@ -131,8 +131,11 @@ function search_api_page_view($id, $keys = NULL, $overridden_options = array()) 
  * @see search-api-page-full-page.tpl.php
  */
 function template_preprocess_search_api_page_full_page(&$variables) {
+  
   $machine_name = $variables['results']['#page']->machine_name;
-  $variables['theme_hook_suggestions'][] = 'search-api-page-full-page__' . $machine_name;
+  $variables['theme_hook_suggestions'][] = 'search_api_page_full_page__' . $machine_name;
+  $parts = explode('_', $machine_name);
+  $variables['theme_hook_suggestions'][] = 'search_api_page_full_page__' . $parts[0] . '__%';
 }
 
 /**
