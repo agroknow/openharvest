@@ -38,7 +38,7 @@ function search_api_page_view($id, $keys = NULL, $overridden_options = array()) 
   }
 
   $ret = array(
-    '#theme' => 'search_api_page_full_page',
+    '#theme' => "search_api_page_full_page__{$page->machine_name}",
   );
   $ret['#contextual_links']['search_api_page'] = array(
     'admin/config/search/search_api/page',
