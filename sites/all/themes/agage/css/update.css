@@ -90,7 +90,8 @@ form.contact-form .form-actions input[type=submit]:hover, .comment-form input[ty
 }
 
 .admin-menu .navbar-fixed-top {
-	top: inherit;	
+	/*top: inherit;	*/
+	padding-top: 29px;
 }
 .admin-menu .goToTop {
 	margin-top: 29px;
