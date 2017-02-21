@@ -104,3 +104,9 @@ function  ak_cp_js_alter(&$javascript) {
     }
   }
 }
+
+
+
+function ak_cp_preprocess_node(&$vars) {
+    $vars['theme_hook_suggestions'][] = 'node__' . $vars['node']->type . '__' . $vars['view_mode'];
+}
