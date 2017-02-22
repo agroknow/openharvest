@@ -123,15 +123,16 @@ field_external_id
       //print render($content);
     ?>
     <div class="col-md-4">
-      <?php print render($content['field_photo']) ?>
+      <?php print render($content['field_logo']) ?>
     </div>
     <div class="col-md-8">
       <?php print render($content['body']) ?>
       <?php print render($content['field_address']) ?>
+      <?php print render($content['links']); ?>
     </div>
   </div>
 
-  <?php print render($content['links']); ?>
+ 
 
   <?php print render($content['comments']); ?>
 

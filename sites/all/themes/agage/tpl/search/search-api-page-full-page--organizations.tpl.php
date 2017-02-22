@@ -14,8 +14,9 @@
  * @see template_preprocess_search_api_page()
  */
 global $base_url;
+$params = drupal_get_query_parameters();
 ?>
-<?php if(empty($results['#keys']) && !isset(drupal_get_query_parameters()['showall'])) { ?>
+<?php if(empty($results['#keys']) && !isset($params['showall']) && !isset($params['f'])) { ?>
 <div class="mainBanner parallax" id="blog-header" data-background="<?php print $base_url . '/' . drupal_get_path('theme', 'agage'); ?>/images/banners/discovery.png">
   <div class="parallax-overlay bg-strip"></div>
     <div class="container">
