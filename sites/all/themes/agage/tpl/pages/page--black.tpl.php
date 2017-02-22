@@ -149,7 +149,10 @@ $body_class = 'map-page';
           <div class="custom-popup" id="map"></div>
           <div class="tools-container">
           <!-- ctools-modal-openharvest-modal-style -->
-              <a class="ctools-use-modal  pull-right add-resource ctools-modal-openharvest-modal-style-fixed" href="modal_forms/nojs/webform/10171"><i class="fa fa-plus-circle" aria-hidden="true"></i></a>
+              <a id="add-resource" class="ctools-use-modal add-resource ctools-modal-openharvest-modal-style-fixed" href="modal_forms/nojs/webform/10171"><i class="fa fa-plus-circle" aria-hidden="true"></i></a>
+              <a id="discover" class="discover" href="<?php echo url('discover-black') ?>"><i class="fa fa-search" aria-hidden="true"></i></a>
+              <a id="show-dp" class="show-dp toggleLayer" href="#" style="display:none"><i class="fa fa-map-marker" aria-hidden="true"></i></a>
+              <a id="show-orgs" class="show-orgs toggleLayer" href="#"><i class="fa fa-building" aria-hidden="true"></i></a>
           </div>
 
 <?php  if($page['section_content']):?>

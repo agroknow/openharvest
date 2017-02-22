@@ -178,9 +178,9 @@ body.page-black #pageWrapper .tools-container ,
 body.page-white #pageWrapper .tools-container {
 	position: absolute;
 	top: 30px;
-	left: 0;
 	right: 0;
 	z-index: 1000;
+  width: 80px;
 }
 
 body.front #page_footer,
@@ -226,14 +226,19 @@ a#submit { z-index: 1; }
    background:#2c3e50;
   }
 
-  .tools-container .add-resource {
+  .tools-container a {
   	font-size: 28px;
   	margin: 10px;
   	padding: 3px;
+    display: block;
 
   }
 
-  .tools-container .add-resource:hover {
+.tools-container a.show-dp {
+  font-size: 37px;
+}
+
+  .tools-container a:hover {
   	color: #fff;
   }
 

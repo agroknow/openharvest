@@ -4,6 +4,8 @@
             var searchControl;
             var map;
             var dataPointMarkers = null;
+            var organizationsLayer = null;
+            var dataPointsLayer = null;
             var $info = $('#info');
             var $map = $('#map');
             var networkColors = {
@@ -313,8 +315,8 @@
                 }
             };
 
-            var organizationsLayer = new L.MarkerDataLayer(orgs, markerLayerOptions);
-            var dataPointsLayer = new L.MarkerDataLayer(dpoints, markerLayerOptions);
+             organizationsLayer = new L.MarkerDataLayer(orgs, markerLayerOptions);
+             dataPointsLayer = new L.MarkerDataLayer(dpoints, markerLayerOptions);
             
             dataPointMarkers = new L.MarkerClusterGroup({
                 iconCreateFunction: function (cluster) {
@@ -334,6 +336,7 @@
                 return L.divIcon({ html: '<div><span>' + count + '</span></div>', className: 'marker-cluster' + myClass, iconSize: new L.Point(rad, rad)  });
             },
             });
+
             dataPointMarkers.addLayer(dataPointsLayer); 
 
             map.addLayer(dataPointMarkers); //Add collections layer
@@ -463,7 +466,23 @@
     //     allOptions.toggle();
     // });
 
+        $('.tools-container .toggleLayer').click(function() {
 
+            if($(this).hasClass('show-dp')) {
+                map.removeLayer(organizationsLayer);     
+                map.addLayer(dataPointMarkers);  
+                $(this).hide();
+                $(this).parent().find('.show-orgs').show();
+
+            } else {
+                map.removeLayer(dataPointMarkers);     
+                map.addLayer(organizationsLayer); 
+                $(this).hide();
+                $(this).parent().find('.show-dp').show();
+            }
+
+               
+        });
     });
 
 })(jQuery);
