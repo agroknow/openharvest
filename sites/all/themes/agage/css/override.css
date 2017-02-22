@@ -227,3 +227,28 @@ img {
 .row-padding-bottom {
   padding-bottom: 130px;
 }
+
+/* Search listing */
+.search-results {
+  padding-right: 15px;
+}
+
+.static {
+  position: static;
+}
+
+.search-results .node-teaser h3 {
+  font-weight: normal;
+}
+
+.search-results .node-teaser {
+  margin-bottom: 10px;
+  padding: 10px;
+  position: relative;
+}
+
+.search-results .node-teaser .read-more {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+}

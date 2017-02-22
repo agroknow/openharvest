@@ -105,7 +105,7 @@ field_external_id
 
   <?php print render($title_prefix); ?>
   <?php if (!$page): ?>
-    <h2<?php print $title_attributes; ?>><a href="<?php print $node_url; ?>"><?php print $title; ?></a></h2>
+    <h3<?php print $title_attributes; ?>><a href="<?php print $node_url; ?>"><?php print $title; ?></a></h3>
   <?php endif; ?>
   <?php print render($title_suffix); ?>
 
@@ -122,18 +122,18 @@ field_external_id
       hide($content['links']);
       //print render($content);
     ?>
-    <div class="col-md-4">
+    <div class="col-md-4 static">
       <?php print render($content['field_logo']) ?>
     </div>
-    <div class="col-md-8">
+    <div class="col-md-8 static">
       <?php print render($content['body']) ?>
       <?php print render($content['field_address']) ?>
-      <?php print render($content['links']); ?>
+      <div class="read-more"><?php print render($content['links']); ?></div>
     </div>
   </div>
 
  
 
-  <?php print render($content['comments']); ?>
+  <?php //print render($content['comments']); ?>
 
 </div>
