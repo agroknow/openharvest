@@ -181,6 +181,11 @@ img {
   padding: 5px;
 }
 
+.form-item .description {
+  font-size: 13px;
+  padding: 2px 0;
+}
+
 /* Navigation */
 .navbar-brand.hide {
   display: none !important;
@@ -320,7 +325,7 @@ p {
 }
 
 /* Full page content */
-.node .field {
+.page-node .node .field {
   padding: 15px 0;
 }
 
@@ -353,3 +358,4 @@ p {
   display: inline-block;
   font-weight: bold;
 }
+
