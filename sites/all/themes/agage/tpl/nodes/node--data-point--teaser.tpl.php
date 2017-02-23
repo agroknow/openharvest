@@ -103,12 +103,6 @@ field_external_id
 
   <?php print $user_picture; ?>
 
-  <?php print render($title_prefix); ?>
-  <?php if (!$page): ?>
-    <h3<?php print $title_attributes; ?>><a href="<?php print $node_url; ?>"><?php print $title; ?></a></h3>
-  <?php endif; ?>
-  <?php print render($title_suffix); ?>
-
   <?php if ($display_submitted): ?>
     <div class="submitted">
       <?php print $submitted; ?>
@@ -126,8 +120,17 @@ field_external_id
       <?php print render($content['field_logo']) ?>
     </div>
     <div class="col-md-8 static">
+    <?php print render($title_prefix); ?>
+
+    <?php if (!$page): ?>
+      <h4<?php print $title_attributes; ?>><a href="<?php print $node_url; ?>"><?php print $title; ?></a></h4>
+    <?php endif; ?>
+    <?php print render($title_suffix); ?>
+
       <?php print render($content['body']) ?>
-      <?php print render($content['field_address']) ?>
+      <?php 
+            if(isset($content['field_address'])) { print '<div class="address-wrap"><i class="pull-left fa fa-map-marker" aria-hidden="true"></i>' . render($content['field_address']) . '</div>';} 
+      ?>
       <div class="read-more"><?php print render($content['links']); ?></div>
     </div>
   </div>
