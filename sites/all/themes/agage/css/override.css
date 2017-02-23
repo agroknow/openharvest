@@ -229,6 +229,11 @@ img {
 }
 
 /* Search listing */
+
+.search-api-page-results {
+  padding-left: 50px;
+  padding-right: 50px;
+}
 .search-results {
   padding-right: 15px;
 }
@@ -237,18 +242,108 @@ img {
   position: static;
 }
 
-.search-results .node-teaser h3 {
+.search-results .node-teaser h3,
+.search-results .node-teaser h4 {
   font-weight: normal;
+  margin-bottom: 10px;
 }
 
 .search-results .node-teaser {
-  margin-bottom: 10px;
-  padding: 10px;
+  margin-bottom: 20px;
+  padding: 10px 10px 20px 10px;
   position: relative;
 }
 
 .search-results .node-teaser .read-more {
   position: absolute;
-  right: 10px;
+  right: 80px;
   bottom: 10px;
+}
+
+.node-teaser .field-type-addressfield {
+  float: left;
+}
+
+.address-wrap {
+  padding: 10px 0;
+}
+
+.address-wrap .fa {
+  font-size: 20px;
+}
+
+.node-teaser .read-more .node-readmore {
+  margin: 0;
+}
+
+.node-teaser .read-more .node-readmore:after {
+  content: "\f105";
+  font-family: Fontawesome; 
+  font-size: 30px;
+  padding-left: 8px;
+  vertical-align: bottom;
+}
+
+/* FACETS */
+
+.facetapi-limit-link {
+    padding: 13px 0;
+    font-weight: bold;
+    display: block;
+    font-size: 14px;
+    letter-spacing: 1px;
+}
+
+
+.search-api-page-results aside .media-container {
+  margin-bottom: 40px;
+
+}
+
+.search-api-page-results aside .media-container h4 {
+  padding-bottom: 7px;
+}
+
+.search-api-page-results aside .media-container .item-list li {
+  padding: 3px 0;
+  
+}
+
+p {
+  line-height: 26px;
+}
+
+/* Full page content */
+.node .field {
+  padding: 15px 0;
+}
+
+.sidebar-list-item {
+    color: #505050;
+    font: 400 16px/22px 'Raleway', sans-serif;
+    letter-spacing: .1em;
+    padding: 4px 0;
+}
+
+#blog-main .row-padding {
+  padding-top: 30px;
+}
+
+
+/* Not found page */
+.not-found-logo {
+  max-width: 400px;
+}
+
+.not-found-icon {
+  font-size: 10em;
+  margin: 40px 0;
+  color: #888;
+}
+
+.not-found-home {
+  font-size: 28px;
+  margin-top: 20px;
+  display: inline-block;
+  font-weight: bold;
 }
