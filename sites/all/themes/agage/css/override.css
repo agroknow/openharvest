@@ -135,6 +135,12 @@
   padding: 25px 0 !important;
 }
   /* Misc css */
+.ajax-progress .throbber {
+  background: transparent url(../images/loader.gif) no-repeat 0px center;
+  height: 25px;
+  width: 25px;
+}
+
 #modal-content .webform-component {
   padding: 5px;
 }
