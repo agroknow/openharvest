@@ -2,8 +2,7 @@
 
 <div id="pageWrapper">
  	<div class="contentWrapper">
-        <section id="home" class="mainBanner banner-1 parallax" data-background="<?php print $base_url.'/'.path_to_theme();?>/images/slider/4.jpg">
-            <div class="parallax-overlay bg-strip"></div>
+        <section id="home" class="mainBanner banner-1 parallax">
             <?php  if($page['content']):?>
             <div class="container-fluid">
                 <div class="row">
@@ -16,7 +15,10 @@
 					?>
                     <div class="col-lg-8 col-md-8 col-md-offset-2">
                         <div class="mainBanner-content page-404 text-center">
+                        <img class="center-block not-found-logo" src="<?php print $base_url.'/'.path_to_theme();?>/logo.png" alt="logo">
+                            <i class="not-found-icon fa fa-plug fa-5x" aria-hidden="true"></i>
                             <?php print render($page['content']); ?>
+                            <p><a class="not-found-home" href="<?php print $base_url ?>">Back to home</a></p>
                         </div>
                     </div>
                 </div>
